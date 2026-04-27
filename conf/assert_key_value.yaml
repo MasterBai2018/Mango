@@ -1,0 +1,467 @@
+# 理解结果回调信息
+NLPResult:
+    source: source
+    type: type
+    text: data.asr.text
+    skill: data.skill
+    intention: data.intention
+    lang: data.lang
+    gender: gender
+    age: age
+    emotion: emotion
+    TTS: data.tts.text
+    tts: data.tts.text
+    start: data.asr.startMts
+    end: data.asr.endMts
+    channelId: data.channel.channelId
+    directivesType: data.directives.0.type                        # directives的type
+    dirCallbackType: data.directives.0.callback.type              # directives-callback的type
+    dirLang: data.directives.0.data.lang                          # directives-data的lang
+    dirCallbackSource: data.directives.0.callback.source          # directives-callback的source，一般取值：TSA
+    dirCallbacketId: data.directives.0.callback.etId              # directives-callback的etid，用于上下文处理
+    searchKey: data.directives.0.data.keyWord                     # 分类搜或者全局搜的搜索关键字
+    searchType: data.directives.0.data.type                       # 分类搜的类型
+    CPUrl: data.directives.0.data.url                             # 一直讲笑话或绕口令的url
+    displayType: data.display.type                                # 成语接龙
+    dirValue: data.directives.0.data.value                        # VR唤醒
+    dirdataType: data.directives.0.data.queryType                 # 多媒体问询类型
+    dirdatakey: data.directives.0.data.keyword                    # 多媒体搜索关键字
+    dirdatacus: data.directives.0.data.customName                 # 自定义歌单名称
+    dirdata: data.directives.0.data                               # directives的data
+    displaySummary: data.display.data.summary                     # 日程的display的summary
+    displayDate: data.display.data.date                           # 日程的display的date
+    displayisAllDay: data.display.data.isAllDay                   # 日程的display的isAllDay
+    dirdatasource: data.directives.0.data.source                  # directives的data的source
+    dirdatatime: data.directives.0.data.time                    # directives的data的time
+    dirdatatarget: data.directives.0.data.target                  # directives的data的target
+    dirdatacF: data.directives.0.data.currentFrequency            # directives的data的currentFrequency
+    dirdatatype: data.directives.0.data.type                      # directives的data的type
+    datavpa: data.vpa.value.0.action                              # data的vpa的value的action
+    asr: data.asr.text                                            # data的asr的text
+    display: data.display                                         # display
+    displaynotify: data.displayNotify.message                     # displayNotify气泡文言的信息内容
+    notifyType: data.displayNotify.type                           # displayNotify气泡文言的执行类型
+    soundEffect: data.soundEffect.soundName                       # soundEffect沉浸音效的执行情况
+    embeddedClarify_ON: data.embedded.debug.clarify                  # 一句话多意图多轮澄清
+    embeddedType_ON: data.embedded.debug.answerType            # 一句话多意图NLG回复类型
+    embeddedComponent_ON: data.embedded.debug.component              # 一句话多意图部品
+    embeddedType_OFF: data.multiIntention.answerType               # 离线一句话多意图NLG回复类型
+    embeddedClarify_OFF: data.tts.clarify                          # 离线一句话多意图多轮澄清
+    embeddedComponent_OFF: data.multiIntention.component           # 离线一句话多意图部品
+    singerName: data.directives.0.data.singerName                 # 多媒体K歌 歌手名
+    songName: data.directives.0.data.songName                     # 多媒体K歌 歌曲名
+    dirdataindex: data.directives.0.data.index                    # 多媒体K歌 播放歌曲索引位置
+    dirappName: data.directives.0.data.appName                    # app控制app名
+    dirpackageName: data.directives.0.data.packageName            # app控制包名
+    dirpage: data.directives.0.data.page                          # app控制page
+    dirsummary: data.directives.0.data.summary                    # 日程标题
+    dirstartTime: data.directives.0.data.startTime                # 日程起始时间
+    direndTime: data.directives.0.data.endTime                    # 日程结束时间
+    dirdatatype: data.directives.0.data.type                      # 日程类型编码
+    diralertRepeat: data.directives.0.data.alertRepeat            # 日程循环类型
+    diraddress: data.directives.0.data.address                    # 日程地址
+    dirisAllDay: data.directives.0.data.isAllDay                  # 日程判断是否是全天
+    dirMySelf: data.directives.0.data.isMySelf                    # 日程生日类型
+    dircount: data.directives.0.data.count                        # 查询日程请求列表数量
+    dirtimeStamp: data.directives.0.data.timeStamp                # 查询最近日程时间戳
+    diruid: data.directives.0.data.uid                            # 删除日程的uid
+    dirdeleteType: data.directives.0.data.deleteType              # 删除日程方式
+    dircurrentDate: data.directives.0.data.currentDate            # 删除日程的startLimitTime的值
+    dirupdateType: data.directives.0.data.updateType              # 修改日程的更新类型
+    dirisMySelf: data.directives.0.data.isMySelf                  # 日程的isMySelf断言
+    dissummary: data.display.data.summary                         # 日程display标题
+    disdate: data.display.data.date                               # 日程display的日期
+    disstartTime: data.display.data.startTime                     # 日程display的开始时间
+    disendTime: data.display.data.endTime                         # 日程display的结束时间
+    disisAllDay: data.display.data.isAllDay                       # 日程display的判断是否全天
+    distargetLocationName: data.display.data.targetLocationName   # 日程display的targetLocationName
+    disdatatype: data.display.data.type                           # 日程display的类型编码
+    disalertRepeat: data.display.data.alertRepeat                 # 日程display的循环日程
+    disisMySelf: data.display.data.isMySelf                       # 日程的display生日类型与type关联
+    disfromIntent: data.display.data.fromIntent                   # 日程的display类型判断
+    disclearDisplay: data.display.data.clearDisplay               # 日程的display上下屏幕状态
+    disprovince: data.display.data.province                       # 天气的display省级行政区名字
+    discity: data.display.data.city                               # 天气的display市级行政区名字
+    disarea: data.display.data.area                               # 天气的display区县级行政区名字
+    disdocument: data.display.data.document                       # 天气的display表示返回的空气信息文案
+    disdocumentTime: data.display.data.documentTime               # 天气的display//文案中的时间/日期或时间/日期区间
+    disairQualityPic: data.display.data.airQualityPic             # 天气的display空气质量图示
+    disairstitle: data.display.data.airs.title                    # 天气的display标题
+    disairsairQuality: data.display.data.airs.airQuality          # 天气的display.airs的空气质量
+    disairsairIndex: data.display.data.airs.airIndex              # 天气的display.airs的AQI指数
+    disweatherDoc: data.display.data.weatherDoc                   # 天气display的天气状态文案
+    disweatherPic: data.display.data.weatherPic                   # 天气display的天气状态图示
+    distemperature: data.display.data.temperature                 # 天气display的当前实时温度
+    distemperatureDayMax: data.display.data.temperatureDayMax     # 天气display的日期温度最高值
+    distemperatureDayMin: data.display.data.temperatureDayMin     # 天气display的日期温度最低值
+    distemperature: data.display.data.temperature                 # 天气display的温度数值（24小时）
+    distemperatureMax: data.display.data.temperatureMax              # BEV天气display的最高温度（24小时）
+    distemperatureMin: data.display.data.temperatureMin              # BEV天气display的最低温度（24小时）
+    disalertInfo: data.display.data.alertInfo                   # BEV天气display的预警信息（24小时）
+    disaqiIndex: data.display.data.aqiIndex                   # BEV天气display的空气质量数值（24小时）
+    disaqiLevel: data.display.data.aqiLevel                   # BEV天气display的空气质量级别（24小时）
+    diswindDir: data.display.data.windDir                   # BEV天气display的风向（24小时）
+    diswindLevel: data.display.data.windLevel                   # BEV天气display的风级（24小时）
+    dismeteorology: data.display.data.meteorology                   # BEV天气display的气象状态 （24小时）
+    disdayOrNight: data.display.data.dayOrNight                   #BEVdisplay的根据日出日落出白天黑夜枚举值：1：白天 2：夜晚 
+    dismeteorologyId: data.display.data.meteorologyId                   # BEV天气display的气象状态Id  （24小时）
+    disbackGroundImage: data.display.data.backGroundImage                   # BEV天气display的背景图片Id （24小时）
+    disliveIndexName: data.display.data.liveIndexName                   # BEV天气display的生活指数名称  （24小时）
+    disliveIndexInfo: data.display.data.liveIndexInfo                   # BEV天气display的生活指数信息  （24小时）
+    disqueryTime: data.display.data.queryTime                   # BEV天气display的展示查询日期/时间
+    dissunTime: data.display.data.sunTime                   # BEV天气display的日出日落时间  （24小时）
+    dismoonTime: data.display.data.moonTime                   # BEV天气display的月出月落时间 （24小时）
+    distemperatureAc: data.display.data.temperatureAc              # BEV天气display的平均温度 （24小时）
+    displaytype: data.display.type                                # directives的type
+    dirisCurrentApp: data.directives.data.isCurrentApp            # directives的isCurrentApp是否为本地应用
+    dirSreenID: data.directives.0.data.screenID                   # 指令的屏幕id断言
+    dirAudioType: data.directives.0.data.audioType                # 多媒体搜索audioType
+    dirAudioTitle: data.directives.0.data.audioTitle               # 多媒体搜索audioTitle
+    dirNaviAddress: data.directives.0.data.address               # 导航复合搜索位置
+    dirKeyword: data.directives.0.data.keyword               # 导航搜索位置
+    dirorgKeyword: data.directives.0.data.orgKeyword               # 导航orgKeyword
+    dirpoiCategory: data.directives.0.data.poiCategory               # 导航poiCategory
+    slots: data.slots
+    displayTitle: data.display.data.title                          # 电话卡片显示的title
+    timePoint: data.directives.0.data.nluSlots.time_point.value              # 时间点
+    timePeriod: data.directives.0.data.nluSlots.time_period.value            # 时间点
+
+# 语音输入法最终结果回调信息
+ASRInputResult:
+    type: type
+    asr: data.result.text
+    start: data.result.startMts
+    end: data.result.endMts
+    lang: data.lang
+    channelId: data.channelId
+    confidence: data.result.confidence
+
+
+# 语音输入法中间结果回调信息
+ASRInputResultTemp:
+    type: type
+    asr: data.result.text
+    start: data.result.startMts
+    end: data.result.endMts
+    lang: data.lang
+    channelId: data.channelId
+    confidence: data.result.confidence
+
+
+# HiCar唤醒结果回调信息
+HICARWakeup:
+    source: source
+    type: type
+    text: data.text
+    lang: data.lang
+    channelId: data.channelId
+    keywordType: data.keywordType
+
+
+# 临时识别结果回调信息
+ASRResultTemp:
+    asr: data.result.text
+    type: type
+    start: data.result.startMts
+    end: data.result.endMts
+    channelId: data.channelId
+    type: data.type
+    location: data.location
+    text: data.text
+    lang: data.lang
+    confidence: data.result.confidence
+
+
+# 最终识别结果回调信息
+ASRResult:
+    source: source
+    type: type
+    asr: data.result.text
+    start: data.result.startMts
+    end: data.result.endMts
+    channelId: data.channelId
+    lang: data.lang
+    confidence: data.result.confidence
+    trailingAudioProb: data.result.trailingAudioProb
+    isTrailingAudio: data.result.isTrailingAudio
+
+# 云端识别结果回调信息
+cloudASRResult:
+    source: source
+    type: type
+    asr: data.result.text
+    start: data.result.startMts
+    end: data.result.endMts
+    channelId: data.channelId
+    lang: data.lang
+    confidence: data.result.confidence
+    trailingAudioProb: data.result.trailingAudioProb
+    isTrailingAudio: data.result.isTrailingAudio
+
+
+# 本地识别结果回调信息
+localASRResult:
+    source: source
+    type: type
+    asr: data.result.text
+    start: data.result.startMts
+    end: data.result.endMts
+    channelId: data.channelId
+    lang: data.lang
+    confidence: data.result.confidence
+    trailingAudioProb: data.result.trailingAudioProb
+    isTrailingAudio: data.result.isTrailingAudio
+
+
+# 声纹注册时回调信号
+startEnroll:
+    type: type
+    status: status
+    user_id: data.user_id
+    message: message
+    channelId: data.channel
+
+
+# 声纹验证时回调信号
+verifyVoiceprint:
+    type: type
+    status: status
+    user_id: data.user_id
+    message: message
+    channelId: data.channel
+
+
+# 唤醒信号回调
+SpeechWakeup:
+   type: type
+   text: data.text
+   keywordType: data.keywordType
+   channelId: data.channelId
+   lang: data.lang
+   start: data.startMts
+   end: data.endMts
+   dialect: data.dialect
+   confidence: data.confidence
+   user_id: data.voiceDetection.voicePrint.voicePrintId
+
+# 静音超时信号
+VoiceInput-SilenceTimeout:
+    channelId: data.channelId
+
+
+# 初始化成功信号版本号断言
+LCSInit:
+    channelId: channelId
+    lcs_res_version: data.lcs_res_version
+    lcsVersion: data.lcsVersion
+    speechEngineVersion: data.speechEngineVersion
+    carPlayVersion: data.carPlayVersion
+
+
+#######################################################################
+# 纯SpeechEngine回调信号断言
+#######################################################################
+# 本地临时识别结果信号
+SpeechASRResultTemp:
+    source: source
+    type: type
+    asr: result.text
+    start: result.startMts
+    end: result.endMts
+    channelId: channelId
+    lang: lang
+    confidence: result.confidence
+
+# 本地最终识别结果信号
+SpeechASRResult:
+    source: source
+    type: type
+    asr: result.text
+    start: result.startMts
+    end: result.endMts
+    channelId: channelId
+    lang: lang
+    confidence: result.confidence
+    trailingAudioProb: result.trailingAudioProb
+
+# 本地唤醒信号
+SpeechEngineWakeup:
+   type: type
+   text: text
+   keywordType: keywordType
+   channelId: channelId
+   lang: lang
+   start: startMts
+   end: endMts
+   dialect: dialect
+   confidence: confidence
+   user_id: voiceDetection.voicePrint.voicePrintId
+
+TSSAIBSWakeup:
+    source: source
+    type: type
+    text: data.text
+    start: data.start_time
+    end: data.end_time
+
+
+#######################################################################
+# AI能力平台回调信号断言
+#######################################################################
+# AI能力平台临时识别结果信号
+TiTanASRResultTemp:
+    source: source
+    type: type
+    asr: asr
+    start: start
+    end: end
+    channelId: channelId
+    lang: lang
+    confidence: confidence
+    emotion: emotion
+    gender: gender
+    age: ages
+
+# AI能力平台最终识别结果信号
+TiTanASRResult:
+    source: source
+    type: type
+    asr: asr
+    start: start
+    end: end
+    channelId: channelId
+    lang: lang
+    confidence: confidence
+    emotion: emotion
+    gender: gender
+    age: ages
+
+#######################################################################
+# PSTTClient回调信号断言
+#######################################################################
+# PSTTClient临时识别结果信号
+PSTTASRResultTemp:
+    source: source
+    type: type
+    asr: asr
+    start: start
+    end: end
+    channelId: channelId
+    lang: lang
+    confidence: confidence
+    emotion: emotion
+    gender: gender
+    age: ages
+
+# PSTTClient最终识别结果信号
+PSTTASRResult:
+    source: source
+    type: type
+    asr: asr
+    start: start
+    end: end
+    channelId: channelId
+    lang: lang
+    confidence: confidence
+    emotion: emotion
+    gender: gender
+    age: ages
+
+
+
+VRConfig:
+    SreMemory: SreMemory
+    deviceInfo: deviceInfo.brand
+    vrOption: vrOption
+    showStyle: showStyle
+    wakeupAlias: wakeupAlias.name
+    setVRWakeupAliasCode: setVRWakeupAliasCode
+    dialogueStyle: dialogueStyle
+    dialogueLanguage: dialogueLanguage
+    SoundAreaOption: SoundAreaOption
+    WakupKeyWordOption: WakupKeyWordOption
+    VoiceWakeupOption: VoiceWakeupOption
+    WakeupEnable: WakeupEnable
+    wakeupWordList: wakeupWordList
+    wakeupWordListAll: wakeupWordListAll
+    wakeupWordMain: wakeupWordMain
+    wakeupRecomTrue: wakeupRecomTrue
+    wakeupRecomFalse: wakeupRecomFalse
+    SetTtsVoiceType: SetTtsVoiceType
+    MultiDialogue: MultiDialogue
+    ExperienceImprovenment: ExperienceImprovenment
+    PersonalSensitiveAuthorization: PersonalSensitiveAuthorization
+    VoiceSensitiveAuthorization: VoiceSensitiveAuthorization
+
+
+#######################################################################
+# CarPlay SDK 回调信号断言
+#######################################################################
+# CarPlay唤醒词检测回调
+CarPlayWakeup:
+    type: type
+    text: text
+    kadStart: kadStart
+    kadEnd: kadEnd
+    duration: duration
+
+# CarPlay VAD状态回调
+CarPlayVadStart:
+    type: type
+    state: state
+    timestamp: timestamp
+
+# CarPlay VAD状态回调
+CarPlayVadEnd:
+    type: type
+    state: state
+    timestamp: timestamp
+
+# CarPlay状态回调
+CarPlayStatus:
+    type: type
+    code: code
+    text: text.data.message
+    version: text.data.version
+
+
+#######################################################################
+# PISALLMClient 回调信号断言（PISA 大模型全双工 WebSocket 客户端）
+# 协议参考：PISA_REALTIME_API_PROTOCOL.md
+#######################################################################
+
+# 用户语音识别结果（response.input_audio_transcription.completed）
+PISASRResult:
+    type: type
+    asr: asr                 # 用户语音识别文本
+    lang: lang               # 发话语种
+
+ResponseTTS:
+    tts: tts               # 大模型回复文本
+
+PISAVedioText:
+    image_text: image_text       # 图片理解文本
+
+# 大模型工具调用结果（response.tool_call.info，如车控指令）
+PISToolCall:
+    type: type
+    item_id: item_id                   # 模型输入或输出的id
+    tool_name: tool_name               # 工具名（如 get_weather）
+    tool_result: tool_result           # 工具调用结果 JSON 字符串
+
+TSS:
+    wakeup_list: result
+
+
+#######################################################################
+# ECNR VECName断言
+#######################################################################
+ECNR:
+    vec: vec
+    md5: md5
+    snr: rms.total_rms_dbfs
+    maxRms: rms.max_rms_dbfs
+    minRms: rms.min_rms_dbfs
+    avgRms: rms.avg_rms_dbfs
+    peakAmplitude: rms.peak_amplitude
+    version: version

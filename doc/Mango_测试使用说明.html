@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mango_测试使用说明</title>
+  <style>
+    :root {
+      --text: #1f2328;
+      --muted: #4b5563;
+      --line: #d0d7de;
+      --bg: #ffffff;
+      --code-bg: #f3f6ff;
+      --code-line: #9db4ff;
+      --th-bg: #eef2f7;
+      --accent: #1d4ed8;
+      --accent-soft: #dbeafe;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Noto Serif SC", "Songti SC", "SimSun", "STSong", serif;
+      line-height: 1.8;
+      font-size: 17px;
+    }
+    .page {
+      max-width: 1440px;
+      margin: 22px auto 30px;
+      padding: 0 20px 26px;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    .sidebar {
+      position: sticky;
+      top: 16px;
+      max-height: calc(100vh - 32px);
+      overflow: auto;
+      border: 1px solid var(--line);
+      background: #fafbfc;
+      border-radius: 8px;
+      padding: 14px 12px;
+    }
+    .sidebar h2 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      border: none;
+      padding: 0;
+    }
+    .sidebar ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .sidebar li {
+      margin: 0;
+      line-height: 1.45;
+    }
+    .sidebar .toc-lvl2 a {
+      display: block;
+      padding: 6px 8px;
+      color: #1f2937;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .sidebar .toc-lvl3 a {
+      display: block;
+      padding: 4px 8px 4px 18px;
+      color: #374151;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 400;
+    }
+    .sidebar a:hover { background: var(--accent-soft); }
+    .content {
+      min-width: 0;
+      padding: 0 8px;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin: 1.2em 0 0.5em;
+      line-height: 1.4;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+    h1 { font-size: 2.1em; border-bottom: 1px solid var(--line); padding-bottom: 0.3em; }
+    h2 { font-size: 1.6em; border-bottom: 1px solid var(--line); padding-bottom: 0.25em; }
+    h3 { font-size: 1.3em; }
+    p { margin: 0.55em 0; }
+    strong { color: #0f3f9f; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--line); margin: 1.4em 0; }
+    code {
+      background: var(--code-bg);
+      border: 1px solid var(--code-line);
+      color: #0b3b91;
+      padding: 0.12em 0.4em;
+      border-radius: 4px;
+      font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+      font-size: 0.95em;
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--code-line);
+      border-left: 5px solid var(--accent);
+      border-radius: 6px;
+      padding: 12px 14px;
+      overflow-x: auto;
+      margin: 0.8em 0 1em;
+    }
+    pre code {
+      border: none;
+      background: transparent;
+      padding: 0;
+      font-size: 0.9em;
+      line-height: 1.6;
+    }
+    blockquote {
+      margin: 0.9em 0;
+      padding: 0.35em 1em;
+      border-left: 4px solid var(--accent);
+      color: var(--muted);
+      background: #f8fbff;
+    }
+    ul, ol { margin: 0.45em 0 0.65em 1.5em; padding: 0; }
+    li { margin: 0.2em 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.9em 0 1.1em;
+      table-layout: fixed;
+      font-size: 15px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      vertical-align: top;
+      word-break: break-word;
+    }
+    th {
+      background: var(--th-bg);
+      font-weight: 700;
+      text-align: left;
+      color: #0f3f9f;
+    }
+    .header {
+      margin-bottom: 22px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #111827;
+    }
+    .header .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 6px;
+    }
+    @media (max-width: 1100px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        position: relative;
+        top: auto;
+        max-height: none;
+      }
+    }
+    </style>
+</head>
+<body>
+  <main class="page">
+    <div class="layout">
+      <aside class="sidebar">
+        <h2>导航目录</h2>
+        <ul><li class="toc-lvl2"><a href="#1-mango框架简介">1. Mango框架简介</a></li><li class="toc-lvl2"><a href="#2-测试环境部署与配置">2. 测试环境部署与配置</a></li><li class="toc-lvl3"><a href="#21-必备环境">2.1 必备环境</a></li><li class="toc-lvl3"><a href="#22-部署手顺">2.2 部署手顺</a></li><li class="toc-lvl3"><a href="#23-关键目录与文件">2.3 关键目录与文件</a></li><li class="toc-lvl3"><a href="#24-测试前要确认的路径">2.4 测试前要确认的路径</a></li><li class="toc-lvl3"><a href="#25-推荐先安装编辑器高亮">2.5 推荐先安装编辑器高亮</a></li><li class="toc-lvl2"><a href="#3-快速入门quick-start">3. 快速入门（Quick Start）</a></li><li class="toc-lvl3"><a href="#31-常用增强参数">3.1 常用增强参数</a></li><li class="toc-lvl2"><a href="#4-参数定义">4. 参数定义</a></li><li class="toc-lvl2"><a href="#5-新增特性mgo-时序文件与-csv-参数化">5. 新增特性：MGO 时序文件与 CSV 参数化</a></li><li class="toc-lvl3"><a href="#51-mgo-时序块">5.1 MGO 时序块</a></li><li class="toc-lvl3"><a href="#52-三层-csv-参数化">5.2 三层 CSV 参数化</a></li><li class="toc-lvl3"><a href="#53-csv-规则">5.3 CSV 规则</a></li><li class="toc-lvl2"><a href="#6-高频指令与特性">6. 高频指令与特性</a></li><li class="toc-lvl3"><a href="#61-tsa-客户端功能链路主执行">6.1 TSA 客户端（功能链路主执行）</a></li><li class="toc-lvl3"><a href="#62-sys-客户端">6.2 SYS 客户端</a></li><li class="toc-lvl3"><a href="#63-exp-客户端断言核心">6.3 EXP 客户端（断言核心）</a></li><li class="toc-lvl3"><a href="#64-tsr-客户端suite-统计">6.4 TSR 客户端（suite 统计）</a></li><li class="toc-lvl3"><a href="#65-完整-case-模板">6.5 完整 Case 模板</a></li><li class="toc-lvl2"><a href="#7-环境变量篇">7. 环境变量篇</a></li><li class="toc-lvl3"><a href="#71-语法与作用">7.1 语法与作用</a></li><li class="toc-lvl3"><a href="#72-变量清单与代码一致">7.2 变量清单（与代码一致）</a></li><li class="toc-lvl3"><a href="#73-实战用法">7.3 实战用法</a></li><li class="toc-lvl3"><a href="#74-注意事项">7.4 注意事项</a></li><li class="toc-lvl2"><a href="#8-测试用例编写篇">8. 测试用例编写篇</a></li><li class="toc-lvl3"><a href="#81-sdk-用例">8.1 SDK 用例</a></li><li class="toc-lvl3"><a href="#82-nlu-用例">8.2 NLU 用例</a></li><li class="toc-lvl2"><a href="#9-结果查看与日志定位">9. 结果查看与日志定位</a></li><li class="toc-lvl3"><a href="#91-主要产物">9.1 主要产物</a></li><li class="toc-lvl3"><a href="#92-日志在哪看">9.2 日志在哪看</a></li><li class="toc-lvl3"><a href="#93-常见排障路径">9.3 常见排障路径</a></li><li class="toc-lvl2"><a href="#10-文档索引功能查阅导航">10. 文档索引（功能查阅导航）</a></li><li class="toc-lvl2"><a href="#11-常见问题">11. 常见问题</a></li><li class="toc-lvl3"><a href="#111-参数化不生效">11.1 参数化不生效</a></li><li class="toc-lvl3"><a href="#112-用例跑不起来">11.2 用例跑不起来</a></li><li class="toc-lvl3"><a href="#113-docker-模式路径错误">11.3 Docker 模式路径错误</a></li><li class="toc-lvl3"><a href="#114-exp-断言总是超时">11.4 EXP 断言总是超时</a></li><li class="toc-lvl3"><a href="#115-tsr-报告为空或数据异常">11.5 TSR 报告为空或数据异常</a></li></ul>
+      </aside>
+      <section class="content">
+        <section class="header">
+          <h1>Mango_测试使用说明</h1>
+        </section>
+        <h1 id="mango-测试使用说明">Mango 测试使用说明</h1>
+<hr />
+<h2 id="1-mango框架简介">1. Mango框架简介</h2>
+<p>Mango 是语音 SDK 自动化测试框架，测试执行主要使用 <strong>NANO DSL</strong>（<code>.mgo</code> 文件）。</p>
+<p>测试人员日常只需要关注 5 件事：</p>
+<ul>
+<li>准备环境与配置</li>
+</ul>
+<ul>
+<li>运行  <code>Run_Docker.py</code></li>
+</ul>
+<ul>
+<li>编写/维护 <code>.mgo</code> 时序用例和<code>.csv</code>参数化文件 </li>
+</ul>
+<ul>
+<li>使用 <code>EXP</code>/<code>LOG</code> 断言验证结果</li>
+</ul>
+<ul>
+<li>查看Allure报告和日志定位问题</li>
+</ul>
+<hr />
+<h2 id="2-测试环境部署与配置">2. 测试环境部署与配置</h2>
+<h3 id="21-必备环境">2.1 必备环境</h3>
+<ul>
+<li>Python 3.6+</li>
+</ul>
+<ul>
+<li>Git</li>
+</ul>
+<ul>
+<li>Linux（推荐）</li>
+</ul>
+<ul>
+<li>Docker（可选）</li>
+</ul>
+<h3 id="22-部署手顺">2.2 部署手顺</h3>
+<blockquote>
+<p>准备 4 个资源：<code>mango</code>、<code>TestCase</code>、<code>TestResource</code>、<code>TestAudio</code>。</p>
+</blockquote>
+<ul>
+<li><code>mango</code>：测试框架主仓，入口脚本为 <code>Run_Mongo.py</code>，部署时使用 <code>develop</code> 分支。</li>
+</ul>
+<ul>
+<li><code>TestCase</code>：测试用例仓，存放 <code>.mgo</code>、配置与 case 列表，部署时使用 <code>develop</code> 分支。</li>
+</ul>
+<ul>
+<li><code>TestResource</code>：测试资源仓，存放运行依赖资源文件，部署时使用 <code>develop</code> 分支。</li>
+</ul>
+<ul>
+<li><code>TestAudio</code>：本地音频目录（非 Git 仓），存放测试音频，通过软链接挂到 <code>mango/TestAudio</code>。</li>
+</ul>
+<ol>
+<li>选择一个工作目录，例如 <code>/data1/baihuidong/work</code>，并进入该目录。</li>
+</ol>
+<ol>
+<li>拉取 <code>mango</code> 主仓库并切到 <code>develop</code> 分支：</li>
+</ol>
+<pre><code>
+   # git clone mango 主仓到本地
+   git clone git@git.pachira.cn:asr/mango.git
+
+   # 切换到develop分支
+   git checkout develop
+</code></pre>
+<ol>
+<li>在mango的同级目录下，准备 <code>TestCase</code>：</li>
+</ol>
+<pre><code>
+   # git clone TestCase 自己fork的仓到本地, username就是自己的git账户
+   git clone git@git.pachira.cn:username/TestCase.git
+   
+   # 添加asr/TestCase.git的远程主仓
+   git remote add upstream git@git.pachira.cn:asr/TestCase.git
+   
+   # 创建本地develop分支并绑定远程仓
+   git checkout -b develop upstream/develop
+</code></pre>
+<ol>
+<li>在mango的同级目录下，准备 <code>TestResource</code>：</li>
+</ol>
+<pre><code>
+   # git clone TestResource 自己fork的仓到本地, username就是自己的git账户
+   git clone git@git.pachira.cn:username/TestResource.git
+   
+   # 添加asr/TestResource.git的远程主仓
+   git remote add upstream git@git.pachira.cn:asr/TestResource.git
+   
+   # 创建本地develop分支并绑定远程仓
+   git checkout -b develop upstream/develop
+</code></pre>
+<ol>
+<li>准备相应软连接路径与音频 <code>TestAudio</code>：</li>
+<ul>
+<li>获取音频目录后，在 <code>mango</code> 目录下创建软链接 <code>TestAudio -&gt; 你的TestAudio绝对路径</code></li>
+</ul>
+</ol>
+<pre><code>
+      cd mango
+      ln -s TestAudio /data1/NFS_DATA/TestAudio
+</code></pre>
+<ul>
+<ul>
+<li>在 <code>mango</code> 目录下创建软链接 <code>TestCase</code></li>
+</ul>
+</ul>
+<pre><code>
+      cd mango
+      ln -s TestCase ../TestCase
+</code></pre>
+<ul>
+<ul>
+<li>在 <code>mango</code> 目录下创建软链接 <code>TestResource</code></li>
+</ul>
+</ul>
+<pre><code>
+      cd mango
+      ln -s TestResource ../TestResource
+</code></pre>
+<ol>
+<li>进入 <code>mango</code> 目录执行一次冒烟命令，确认环境可用：</li>
+</ol>
+<pre><code>
+python3 Run_Mongo.py -h
+</code></pre>
+<h3 id="23-关键目录与文件">2.3 关键目录与文件</h3>
+<ul>
+<li>入口脚本：<code>Run_Mongo.py</code></li>
+</ul>
+<ul>
+<li>Docker 入口：<code>Run_Docker.py</code></li>
+</ul>
+<ul>
+<li>配置目录：<code>conf/</code></li>
+</ul>
+<ul>
+<li>NANO 文档目录：<code>src/testsuite/NANO/doc/</code></li>
+</ul>
+<h3 id="24-测试前要确认的路径">2.4 测试前要确认的路径</h3>
+<ul>
+<li><code>-C</code>：解码配置文件路径</li>
+</ul>
+<ul>
+<li><code>-a</code>：<code>.mgo</code> 用例路径</li>
+</ul>
+<ul>
+<li><code>-P</code>：参数化 CSV（可选）</li>
+</ul>
+<ul>
+<li><code>-S</code>：动态步骤 CSV（可选）</li>
+</ul>
+<h3 id="25-推荐先安装编辑器高亮">2.5 推荐先安装编辑器高亮</h3>
+<p>为了便于测试同学编写、阅读和排查 NANO Case，Mango提供了NANO的 <code>.mgo</code> 的编辑器高亮插件。高亮和 Hover 能直接帮助你识别：</p>
+<ul>
+<li><code>SETUP</code> / <code>TEARDOWN</code> / <code>PARAMETER</code> 等块结构</li>
+</ul>
+<ul>
+<li><code>[TSA]</code>、<code>[SET]</code>、<code>[EXP]</code> 等客户端标签</li>
+</ul>
+<ul>
+<li>命令、断言、环境变量、<code>&lt;timeout=...&gt;</code> 等 DSL 关键元素的使用说明以及示例代码</li>
+</ul>
+<h4 id="251-vim-安装手顺">2.5.1 Vim 安装手顺</h4>
+<p>项目已经提供系统级安装脚本：<code>plugins/vim/install_mgo_vim_systemwide.sh</code></p>
+<p>推荐步骤：</p>
+<ol>
+<li>执行如下脚本安装：</li>
+</ol>
+<pre><code>
+sh plugins/vim/install_mgo_vim_systemwide.sh
+</code></pre>
+<ol>
+<li>安装完成后，重新打开 <code>.mgo</code> 文件，即可展示NANO DSL语法高亮。</li>
+</ol>
+<h4 id="252-vscodecursor-插件安装手顺">2.5.2 VSCode/Cursor 插件安装手顺</h4>
+<p>项目内置了 NANO DSL 的 VSCode/Cursor 插件源码目录：<code>plugins/vscode-mgo-extension</code></p>
+<p>插件能力包括：</p>
+<ul>
+<li><code>.mgo</code> 语法高亮</li>
+</ul>
+<ul>
+<li>命令/客户端/断言自动补全</li>
+</ul>
+<ul>
+<li>Hover 悬浮说明（语法、参数、示例）</li>
+</ul>
+<ul>
+<li>基础静态诊断</li>
+</ul>
+<p>推荐安装方式如下：</p>
+<ol>
+<li>已提供 <code>.vsix</code> 安装包：</li>
+</ol>
+<pre><code>
+plugins/vscode-mgo-extension/mango-nano-mgo-0.0.4.vsix
+</code></pre>
+<p>2、VSCode/Cursor界面安装：</p>
+<ul>
+<li>a. 点击VSCode顶部搜索框，选择: <code>显示并运行命令 &gt;</code></li>
+</ul>
+<ul>
+<li>b. 或者组合键: <code>Command + Shift + P</code></li>
+</ul>
+<ul>
+<li>c. 选择: <code>扩展:从VSIX安装...</code>或者<code>Extensions: Install from VSIX...</code> 进行安装。</li>
+</ul>
+<ul>
+<li>d. 选择Mango路径下的插件文件: <code>plugins/vscode-mgo-extension/mango-nano-mgo-0.0.4.vsix</code> 安装即可。</li>
+</ul>
+<ol>
+<li>安装完成后，用 VSCode/Cursor 打开任意 <code>.mgo</code> 文件，确认是否已经具备语法高亮、补全和 Hover 提示。</li>
+</ol>
+<hr />
+<h2 id="3-快速入门quick-start">3. 快速入门（Quick Start）</h2>
+<pre><code>
+python3 Run_Docker.py -f NANO \
+  -C TestCase/conf/decoder/decoder.conf \
+  -a TestCase/caselist/24MM/SDK/NANO/nano.mgo \
+  -b 24mm/ota2
+</code></pre>
+<h3 id="31-常用增强参数">3.1 常用增强参数</h3>
+<pre><code>
+# 并发
+python3 Run_Mongo.py ... -n 5
+
+# 失败重试
+python3 Run_Mongo.py ... -R 1
+
+# 全局参数化
+python3 Run_Mongo.py ... -P TestCase/data/test_data.csv
+
+# 参数化行过滤
+python3 Run_Mongo.py ... -P TestCase/data/test_data.csv -PF 10-30
+
+# 动态步骤
+python3 Run_Mongo.py ... -S TestCase/data/steps.csv
+</code></pre>
+<hr />
+<h2 id="4-参数定义">4. 参数定义</h2>
+<blockquote>
+<p>参数说明：参数意义 + 可传值 + 示例。</p>
+</blockquote>
+<table><tbody>
+<tr><th>&lt;span style="display:inline-block;min-width:50px"&gt;参数&lt;/span&gt;</th><th>参数意义</th><th>可传值</th><th>示例</th></tr>
+<tr><td><code>-v</code></td><td>Docker 挂载目录（仅 <code>Run_Docker.py</code>）</td><td>3种写法：<code>/host/path</code>（容器内同路径，默认 <code>ro</code>）；<code>/host:/container</code>（默认 <code>ro</code>）；`/host:/container:ro</td><td>rw`（显式权限）</td><td><code>-v /data1/cases:/mango/TestCase:ro</code></td></tr>
+<tr><td><code>-f</code></td><td>套件过滤</td><td>字符串（固定写 <code>NANO</code> ），仅单跑时，传入</td><td><code>-f NANO</code></td></tr>
+<tr><td><code>-C</code></td><td>SpeechEngine配置文件路径</td><td>配置文件路径（<code>.conf</code>）</td><td><code>-C TestCase/conf/decoder/decoder.conf</code></td></tr>
+<tr><td><code>-a</code></td><td>时序/用例路径</td><td><code>.mgo</code> 文件路径</td><td><code>-a TestCase/caselist/24MM/SDK/NANO/nano.mgo</code></td></tr>
+<tr><td><code>-p</code></td><td>LCSEngine配置路径</td><td>配置文件路径（通常 LCS 配置）</td><td><code>-p TestCase/conf/Mongo/config/lcs/lcs_OTA_test.conf</code></td></tr>
+<tr><td><code>-b</code></td><td>环境选择</td><td>当前可选：<code>24mm/mp</code>、<code>24mm/ota1</code>、<code>24mm/ota2</code>、<code>24mm/ota3</code>、<code>bev</code>、<code>pstt</code>、<code>seres</code>、<code>psl</code>、<code>nissan</code>、<code>thai</code>、<code>titan</code>、<code>800d</code>、<code>pisa</code>、<code>tss</code></td><td><code>-b 24mm/ota2</code></td></tr>
+<tr><td><code>-w</code></td><td>工作目录根路径（日志/报告/中间产物输出位置）</td><td>相对路径或绝对路径；不传默认 <code>workspace</code>。区别：不传时结果落在 <code>./workspace</code>，传入后所有输出落在你指定目录（含单跑与 solution 并发）</td><td><code>-w /data/mango_workspace</code></td></tr>
+<tr><td><code>-n</code></td><td>并发执行数</td><td>数字或 <code>auto</code></td><td><code>-n 5</code></td></tr>
+<tr><td><code>-R</code></td><td>失败重试次数</td><td>非负整数</td><td><code>-R 1</code></td></tr>
+<tr><td><code>-F</code></td><td>用例行号过滤</td><td>支持：<code>start-end</code>、<code>*-end</code>（从第1行到end）、<code>start-*</code>（从start到文件末尾）</td><td><code>-F 6-20</code>、<code>-F *-10</code>、<code>-F 10-*</code></td></tr>
+<tr><td><code>-t</code></td><td>按 Tag 过滤 suite（solution 模式）</td><td>方括号格式；单个：<code>[ONLINE]</code>；多个：<code>[ONLINE][CP]</code>；必选标签可加 <code>+</code>：<code>[+ONLINE][CP]</code></td><td><code>-t [ONLINE][CP]</code></td></tr>
+<tr><td><code>-L</code></td><td>Allure报告是否保存 SDK 日志</td><td><code>yes</code> / <code>no</code></td><td><code>-L yes</code></td></tr>
+<tr><td><code>-P</code></td><td>全局参数化数据</td><td>CSV 文件路径</td><td><code>-P TestCase/data/test_data.csv</code></td></tr>
+<tr><td><code>-PF</code></td><td>参数化 CSV 行过滤（不含表头，从1开始计数）</td><td>支持：<code>start-end</code>、<code>*-end</code>、<code>start-*</code></td><td><code>-PF 10-30</code>、<code>-PF *-10</code>、<code>-PF 10-*</code></td></tr>
+<tr><td><code>-S</code></td><td>动态步骤数据</td><td>CSV 文件路径（需包含 <code>CaseID</code>、<code>StepCase</code>）</td><td><code>-S TestCase/data/steps.csv</code></td></tr>
+<tr><td><code>-D</code></td><td>FTP 资源下载类型</td><td><code>0</code> 全部 / <code>1</code> 音频 / <code>2</code> 资源</td><td><code>-D 0</code></td></tr>
+<tr><td><code>-J</code></td><td>Jenkins 依赖库下载构建号</td><td>按“项目依赖的 Jenkins 个数”用 <code>-</code> 分隔：<code>new</code>/<code>latest</code>（最新成功构建）或数字构建号；多依赖示例：<code>new-new</code>、<code>123-456</code>、<code>new-456</code>。</td><td><code>-J new-new</code></td></tr>
+<tr><td><code>-g</code></td><td>开启 GDB 调试</td><td>开关型（按项目脚本约定传值）</td><td><code>-g</code></td></tr>
+<tr><td><code>-E</code></td><td>solution 的 DEFINE 过滤开关（按名字启用）</td><td>逗号分隔的 DEFINE 名称列表；仅执行命中的 DEFINE 配置（等价覆盖/补充 solution 内 <code>ENABLE</code>）</td><td><code>-E ONLINE_SMOKE,CP_REGRESSION</code></td></tr>
+<tr><td><code>-c</code></td><td>传入 solution 文件并按 solution 方式执行（支持并发调度）</td><td>1个或多个 solution 文件路径（空格分隔）；每个 solution 可包含多个 scene/suite，并按配置并发运行</td><td><code>-c TestCase/conf/solution/smoke.yaml TestCase/conf/solution/regression.yaml</code></td></tr>
+<tr><td><code>-l</code></td><td>列出可用 suite（废弃）</td><td>开关型（通常不带值）</td><td><code>-l</code></td></tr>
+<tr><td><code>-s</code></td><td>救援模式（废弃）</td><td>开关型（按项目脚本约定传值）</td><td><code>-s 1</code></td></tr>
+</tbody></table>
+<hr />
+<h2 id="5-新增特性mgo-时序文件与-csv-参数化">5. 新增特性：MGO 时序文件与 CSV 参数化</h2>
+<h3 id="51-mgo-时序块">5.1 MGO 时序块</h3>
+<ul>
+<li><code>SETUP</code>：所有用例前执行，一般用于配置文件临时修改，服务启动，创建引擎等操作，<strong>每个Suite仅会执行一次</strong></li>
+</ul>
+<pre><code>
+  &gt;&gt;&gt; SETUP
+  [SYS]PULL         AIBSServer cmn {"brand":"0"}
+  [SYS]PULL         LCSEngine cmn
+  [SYS]PULL         SpeechEngine cmn
+  [TSA]CREATE       cmn com.autoai.vr.service_vrassistant
+  [SET]CREATE       cmn com.autoai.vrsetting
+  &lt;&lt;&lt;
+</code></pre>
+<ul>
+<li><code>TEST</code>：测试主体，<strong>根据参数化文件，该测试主体将会执行多次</strong></li>
+</ul>
+<pre><code>
+  &gt;&gt;&gt;
+  [TSA]START        1
+  [SET]SETVRCONFIG  DIALOGUE_LANGUAGE cmn
+  [SET]SETVRCONFIG  WAKEUP_KEYWORD_OPTION 0
+  [SET]SETVRCONFIG  WAKEUP_ENABLE 你好雷克萨斯 cmn
+  [TSA]FREEWAKEUP   1
+  [TSA]STRATEGY     1
+  [TSA]DATA         TestResource/FTP_RES/voicedata/SDK/24MM/VR/geiniqugemzjzengdayinliang.wav frame=320 delay=1
+  [EXP]NLPResult    text:给你取个名字叫增大音量;skill:VRWakeWord;intention:setWakeWordWithName &lt;timeout=5&gt;
+  [TSA]STOP
+  &lt;&lt;&lt;
+</code></pre>
+<ul>
+<li><code>TEARDOWN</code>：所有用例后执行，一般用于服务的清理，报告统计，上传报告附件等等，<strong>每个Suite仅会执行一次</strong></li>
+</ul>
+<pre><code>
+  &gt;&gt;&gt; TEARDOWN
+  [SYS]KILL   SpeechEngine
+  [SYS]KILL   LCSEngine
+  [SYS]KILL   AIBSServer
+  [SYS]ALLURE TEXT {WORKPATH}/callback.jsonl
+  &lt;&lt;&lt;
+</code></pre>
+<ul>
+<li><code>SUITE_TEARDOWN</code>：suite 结束后执行（常用于统计），一般用于Suite级别的报告统计（TSR客户端），<strong>每个Suite仅会执行一次</strong></li>
+</ul>
+<pre><code>
+  &gt;&gt;&gt; SUITE_TEARDOWN
+  [TSR]DELAY ref=${DELAY_REF} result={WORKPATH}/callback.jsonl type=ASRResultTemp
+  [TSR]DELAY ref=${DELAY_REF} result={WORKPATH}/callback.jsonl type=ASRResult
+  &lt;&lt;&lt;
+</code></pre>
+<h3 id="52-三层-csv-参数化">5.2 三层 CSV 参数化</h3>
+<p>参数化适用场景：</p>
+<ul>
+<li>同一条测试逻辑需要覆盖多组输入（文本、音频、期望 skill/intention）</li>
+</ul>
+<ul>
+<li>同一套用例需要在不同语言/环境变量下重复执行</li>
+</ul>
+<ul>
+<li>同一 MGO 需要按不同步骤序列动态生成执行链路</li>
+</ul>
+<p>参数化基础写法（MGO）：</p>
+<ul>
+<li>在 MGO 中使用占位符：<code>${变量名}</code></li>
+</ul>
+<ul>
+<li>变量名必须和 CSV 表头一致（区分大小写）</li>
+</ul>
+<pre><code>
+&gt;&gt;&gt;
+[TSA]DATA ${AUDIOPATH} frame=320 delay=${DELAY}
+[EXP]ASRResult asr:${TEXT} &lt;timeout=3&gt;
+&lt;&lt;&lt;
+</code></pre>
+<p>CSV 文件怎么写：</p>
+<ul>
+<li>第一行是表头（变量名），后续每行是一组测试数据</li>
+</ul>
+<ul>
+<li>支持逗号或 Tab 分隔</li>
+</ul>
+<ul>
+<li>支持注释行/空行过滤</li>
+</ul>
+<ul>
+<li>全局参数可使用头部 <code>@</code> 参数（例如 <code>@DELAY: 0</code>）</li>
+</ul>
+<pre><code>
+@DELAY: 0
+
+AUDIOPATH   TEXT
+TestAudio/1.wav  今天天气怎么样
+TestAudio/2.wav  帮我打开车窗
+</code></pre>
+<p>三种参数化方式：</p>
+<ol>
+<li>全局 CSV（<code>-P</code>）</li>
+</ol>
+<ul>
+<li>适合：整份 MGO 中多个 case 共享同一份参数表</li>
+</ul>
+<ul>
+<li>命令示例：</li>
+</ul>
+<pre><code>
+python3 Run_Mongo.py -f NANO -C xxx.conf -a demo.mgo -b 24mm/ota2 -P TestCase/data/test_data.csv
+</code></pre>
+<ol>
+<li>Case 级 CSV（<code>&gt;&gt;&gt; PARAMETER xxx.csv</code>）</li>
+</ol>
+<ul>
+<li>适合：某个 case 使用独立参数表，避免和全局 CSV 混用</li>
+</ul>
+<ul>
+<li>MGO 示例：</li>
+</ul>
+<pre><code>
+&gt;&gt;&gt; PARAMETER TestCase/data/case1_data.csv
+...
+[TSA]TEXT ${text}
+[EXP]NLPResult skill:${skill}
+...
+&lt;&lt;&lt;
+
+&gt;&gt;&gt; PARAMETER TestCase/data/case1_data2.csv
+...
+[TSA]TEXT ${text}
+...
+&lt;&lt;&lt;
+</code></pre>
+<ol>
+<li>Solution中配置参数化文件</li>
+</ol>
+<pre><code>
+# SUITE: NANO,配置文件,mgo时序文件,csv参数化文件,[TAG]
+DEFINE
+    NAME  :  ASR_Multi_Lang
+    CONFIG : TestCase/conf/Mongo/config/24mm_ota_2/lcs_OTA2_test.conf
+    SUITE : NANO,TestCase/conf/Mongo/config/24mm_ota_2/Lexus_D/decoder.conf,TestCase/nano/24MM/SDK/ASR_Multi_Lang/asr.mgo,TestCase/nano/24MM/SDK/ASR_Multi_Lang/multi_lang_cmn_online.csv,[ONLINE]
+    ARG_ABSTRACT : 在线中文识别
+    REPEAT : 1
+    STDOUT : ./all-report-log/24mm-lexus-asr-rate
+    PARALLEL : true
+    PURPOSE : "zeroshot唤醒全链路测试"    @Describe the purpose of the current scene
+    OWNER : sujun
+END
+</code></pre>
+<h3 id="53-csv-规则">5.3 CSV 规则</h3>
+<ul>
+<li>支持逗号/Tab 自动识别</li>
+</ul>
+<ul>
+<li>支持无效行过滤（空行、注释）</li>
+</ul>
+<ul>
+<li>支持头部 <code>@</code> 参数（例如 <code>@DELAY: 0</code>）</li>
+</ul>
+<ul>
+<li>支持 <code>-PF</code> 行范围过滤</li>
+</ul>
+<hr />
+<h2 id="6-高频指令与特性">6. 高频指令与特性</h2>
+<blockquote>
+<p>本章是测试人员最常用内容，重点看 <code>TSA/SYS/EXP/TSR</code>。</p>
+</blockquote>
+<h3 id="61-tsa-客户端功能链路主执行">6.1 TSA 客户端（功能链路主执行）</h3>
+<p>推荐时序（最常用）：</p>
+<ol>
+<li><code>SETUP</code> 中创建：<code>[TSA]CREATE</code></li>
+</ol>
+<ol>
+<li><code>TEST</code> 中执行：<code>[TSA]START -&gt; (FREEWAKEUP/STRATEGY) -&gt; DATA/TEXT/EVENT -&gt; EXP断言 -&gt; [TSA]STOP</code></li>
+</ol>
+<ol>
+<li><code>TEARDOWN</code> 中释放：<code>[TSA]FREE</code></li>
+</ol>
+<p>常用接口写法（含参数）：</p>
+<table><tbody>
+<tr><th>接口</th><th>语法</th><th>可传参数</th><th>示例</th></tr>
+<tr><td><code>CREATE</code></td><td><code>[TSA]CREATE language appid [config_file]</code></td><td><code>language</code>：<code>cmn/eng/...</code>；<code>appid</code>：应用包名；<code>config_file</code>：可选配置路径</td><td><code>[TSA]CREATE cmn com.autoai.vr.service_vrassistant</code></td></tr>
+<tr><td><code>START</code></td><td><code>[TSA]START channel_num</code></td><td><code>channel_num</code>：通道数（常用 <code>1</code>）</td><td><code>[TSA]START 1</code></td></tr>
+<tr><td><code>FREEWAKEUP</code></td><td><code>[TSA]FREEWAKEUP status</code></td><td><code>status</code>：<code>0</code> 关闭免唤醒；<code>1</code> 开启免唤醒</td><td><code>[TSA]FREEWAKEUP 1</code></td></tr>
+<tr><td><code>STRATEGY</code></td><td><code>[TSA]STRATEGY status</code></td><td><code>status</code>：<code>0/1/2</code>（按项目策略定义）</td><td><code>[TSA]STRATEGY 1</code></td></tr>
+<tr><td><code>DATA</code></td><td><code>[TSA]DATA audio_path [named_parameters...]</code></td><td><code>audio_path</code>：音频路径；可选命名参数：<code>frame=320/640/1280</code>、<code>delay=秒</code>、<code>range=[start,end]</code>、<code>abstime=0/1</code></td><td><code>[TSA]DATA TestAudio/demo.wav frame=320 delay=1</code></td></tr>
+<tr><td><code>TEXT</code></td><td><code>[TSA]TEXT text</code></td><td><code>text</code>：文本请求</td><td><code>[TSA]TEXT 打开空调</code></td></tr>
+<tr><td><code>EVENT</code></td><td><code>[TSA]EVENT json_event_data</code></td><td>JSON字符串或事件文件路径（项目内常用事件文件路径）</td><td><code>[TSA]EVENT TestCase/caselist/.../set_VRWakeUp_success.json</code></td></tr>
+<tr><td><code>STOP</code></td><td><code>[TSA]STOP</code></td><td>无</td><td><code>[TSA]STOP</code></td></tr>
+<tr><td><code>FREE</code></td><td><code>[TSA]FREE</code></td><td>无</td><td><code>[TSA]FREE</code></td></tr>
+</tbody></table>
+<p>示例1（语音链路）：</p>
+<pre><code>
+&gt;&gt;&gt;
+[TSA]START        1
+[TSA]FREEWAKEUP   1
+[TSA]STRATEGY     1
+[TSA]DATA         TestAudio/Wakeup/voice_alis/xiaobaitu.wav frame=320 delay=1
+[EXP]NLPResult    skill:VRWakeWord;intention:addInfoWakeWord &lt;timeout=5&gt;
+[TSA]EVENT        TestCase/caselist/Mongo/caselist/smoke/wakeup/event/set_VRWakeUp_success.json
+[TSA]STOP
+&lt;&lt;&lt;
+</code></pre>
+<p>示例2（文本链路）：</p>
+<pre><code>
+&gt;&gt;&gt;
+[TSA]START 1
+[TSA]FREEWAKEUP 1
+[TSA]STRATEGY 1
+[TSA]TEXT 导航到公司
+[EXP]NLPResult skill:NAVI;intention:naviPlanRouteToDest &lt;timeout=3&gt;
+[TSA]STOP
+&lt;&lt;&lt;
+</code></pre>
+<h3 id="62-sys-客户端">6.2 SYS 客户端</h3>
+<p>推荐时序（最常用）：</p>
+<ol>
+<li><code>SETUP</code>：<code>ENV -&gt; PULL -&gt; SLEEP</code>（先设环境变量，再拉服务）</li>
+</ol>
+<ol>
+<li><code>TEST</code>：必要时用 <code>CMD</code> 做运行时文件/日志/资源处理，<code>BREF</code> 写当前 case 简介</li>
+</ol>
+<ol>
+<li><code>TEARDOWN</code>：<code>KILL</code> 清理服务</li>
+</ol>
+<p>常用接口写法（含参数）：</p>
+<table><tbody>
+<tr><th>接口</th><th>语法</th><th>可传参数</th><th>示例</th></tr>
+<tr><td><code>PULL</code></td><td><code>[SYS]PULL service_name language [car_type]</code></td><td><code>service_name</code>：<code>LCSEngine</code>/<code>SpeechEngine</code>/<code>AIBSServer</code>；<code>language</code>：如 <code>cmn</code>；<code>car_type</code>：仅 AIBSServer 常用，JSON</td><td><code>[SYS]PULL AIBSServer cmn {"brand":"0"}</code></td></tr>
+<tr><td><code>KILL</code></td><td><code>[SYS]KILL service_name</code></td><td>服务名</td><td><code>[SYS]KILL AIBSServer</code></td></tr>
+<tr><td><code>SLEEP</code></td><td><code>[SYS]SLEEP seconds</code></td><td>秒（支持小数）</td><td><code>[SYS]SLEEP 0.5</code></td></tr>
+<tr><td><code>ENV</code></td><td><code>[SYS]ENV key=value</code></td><td><code>key</code> 环境变量名；<code>value</code> 可含 <code>=</code>，可用单/双引号包裹</td><td><code>[SYS]ENV MY_CONFIG_PATH=/data/test/config</code></td></tr>
+<tr><td><code>CMD</code></td><td><code>[SYS]CMD command</code></td><td>任意 Linux shell 命令（支持管道、重定向、组合命令）</td><td><code>[SYS]CMD mkdir -p {WORKPATH}/output</code></td></tr>
+<tr><td><code>UPLOAD</code></td><td><code>[SYS]UPLOAD upload_type file_path [params...]</code></td><td><code>upload_type</code> 支持：<code>JSON</code>、<code>LINE</code>、<code>REPLACE</code>、<code>DELETE</code></td><td><code>[SYS]UPLOAD LINE {WORKPATH}/decoder.conf ASK_SIL_DURATION 540</code></td></tr>
+<tr><td><code>BREF</code></td><td><code>[SYS]BREF message</code></td><td>case 简介文本（可多词）</td><td><code>[SYS]BREF 天气查询-冒烟</code></td></tr>
+<tr><td><code>CLEAR_ASSERT</code></td><td><code>[SYS]CLEAR_ASSERT [type]</code></td><td>可选 <code>type</code>：<code>ALL</code>（默认）、<code>CALLBACK</code>、<code>API</code>，或具体类型（如 <code>ASRResult</code>、<code>GET_VERSION_RET</code>）</td><td><code>[SYS]CLEAR_ASSERT CALLBACK</code></td></tr>
+</tbody></table>
+<p><code>UPLOAD</code> 重点说明（运行时改文件）：</p>
+<ul>
+<li><code>JSON</code>：按字段路径修改 JSON 值  </li>
+</ul>
+<p>语法：<code>[SYS]UPLOAD JSON file_path field_path new_value</code></p>
+<ul>
+<li><code>LINE</code>：按 key 修改配置行（常用于 <code>.conf</code>）  </li>
+</ul>
+<p>语法：<code>[SYS]UPLOAD LINE file_path key new_value</code></p>
+<ul>
+<li><code>REPLACE</code>：全文字符串替换  </li>
+</ul>
+<p>语法：<code>[SYS]UPLOAD REPLACE file_path old_value new_value</code></p>
+<ul>
+<li><code>DELETE</code>：删除某个Key</li>
+</ul>
+<p>语法：<code>[SYS]UPLOAD DELETE file_path key</code></p>
+<p><code>UPLOAD</code> 示例：</p>
+<pre><code>
+# 1) JSON字段更新
+[SYS]UPLOAD JSON {WORKPATH}/daemon_tag.json data.text.start 320
+
+# 2) 按key更新配置项
+[SYS]UPLOAD LINE {CONFIGPATH} ASK_SIL_DURATION 540
+
+# 3) 全文替换
+[SYS]UPLOAD REPLACE {CONFIGPATH} /old/path /new/path
+
+# 4) 按key删除配置项
+[SYS]UPLOAD DELETE {CONFIGPATH} Key1
+</code></pre>
+<p><code>CLEAR_ASSERT</code> 重点说明（多轮场景强烈建议使用）：</p>
+<ul>
+<li>作用：清空当前 case 的断言上下文，避免“上一轮回调/接口结果”干扰下一轮断言匹配。</li>
+</ul>
+<ul>
+<li>典型场景：一个 case 内有多轮 <code>TEXT/DATA + EXP</code>，或先跑预热动作再做正式断言。</li>
+</ul>
+<ul>
+<li>推荐时机：每一轮关键断言前执行一次，确保断言只命中“本轮新增数据”。</li>
+</ul>
+<p><code>CLEAR_ASSERT</code> 示例：</p>
+<pre><code>
+&gt;&gt;&gt;
+[TSA]START 1
+[TSA]TEXT 今天天气怎么样
+[EXP]NLPResult skill:WEATHER;intention:QUERY &lt;timeout=3&gt;
+
+# 清空上一轮断言上下文，避免下一轮串数据
+[SYS]CLEAR_ASSERT ALL
+
+[TSA]TEXT 导航到公司
+[EXP]NLPResult skill:NAVI;intention:naviPlanRouteToDest &lt;timeout=3&gt;
+[TSA]STOP
+&lt;&lt;&lt;
+</code></pre>
+<p><code>CMD</code> 重点说明（推荐重点掌握）：</p>
+<ul>
+<li>核心能力：把 Linux shell 直接嵌入测试时序，适合做测试前准备、运行中动态处理、测试后数据整理。</li>
+</ul>
+<ul>
+<li>与 <code>ENV</code> 配合：先 <code>[SYS]ENV key=value</code>，再通过 <code>[SYS]CMD</code> 使用该环境变量，可实现“同一用例逻辑 + 不同环境配置”。</li>
+</ul>
+<ul>
+<li>常见场景：</li>
+<ul>
+<li>运行前准备目录/软链接/配置备份</li>
+</ul>
+<ul>
+<li>运行中采样日志、提取关键字段、快速统计</li>
+</ul>
+<ul>
+<li>运行后归档结果、生成中间数据供断言或报告使用</li>
+</ul>
+</ul>
+<p><code>CMD</code> 示例（配合环境变量和 shell）：</p>
+<pre><code>
+&gt;&gt;&gt; SETUP
+...
+[SYS]CMD cp {CONFIGPATH} {WORKPATH}/decoder.conf.bak
+[SYS]PULL AIBSServer cmn {"brand":"0"}
+[SYS]PULL LCSEngine cmn
+[SYS]SLEEP 2
+&lt;&lt;&lt;
+
+&gt;&gt;&gt;
+[SYS]BREF ASR时延冒烟-在线
+[SYS]CMD echo "[INFO] start ${CASE_NAME}" &gt;&gt; {LOGPATH}/runtime.log
+[SYS]CMD cat {WORKPATH}/callback.jsonl | wc -l &gt; ${WORKPATH}/callback_lines.txt
+&lt;&lt;&lt;
+
+&gt;&gt;&gt; TEARDOWN
+[SYS]CMD tar -czf ${LOGPATH}/logs.tgz {LOGPATH}
+[SYS]KILL LCSEngine
+[SYS]KILL AIBSServer
+&lt;&lt;&lt;
+</code></pre>
+<p>注意事项：</p>
+<ul>
+<li><code>ENV</code> 必须写在对应 <code>PULL</code> 之前，否则服务进程拿不到变量。</li>
+</ul>
+<ul>
+<li><code>CMD</code> 执行失败会直接影响 case 结果，复杂命令建议先在终端验证。</li>
+</ul>
+<ul>
+<li>涉及路径含空格时建议加引号。</li>
+</ul>
+<ul>
+<li><code>CLEAR_ASSERT</code> 不会清理日志文件本身，只清理断言引擎内存中的匹配上下文。</li>
+</ul>
+<h3 id="63-exp-客户端断言核心">6.3 EXP 客户端（断言核心）</h3>
+<p>通用语法（回调/结果类）：</p>
+<pre><code>
+[EXP]断言类型 字段1:期望值;字段2:期望值 &lt;timeout=秒&gt;
+</code></pre>
+<p>推荐时序：</p>
+<ol>
+<li>先触发行为（<code>[TSA]DATA</code> / <code>[TSA]TEXT</code> / <code>[TSA]EVENT</code>）</li>
+</ol>
+<ol>
+<li>再写对应 <code>EXP</code> 断言</li>
+</ol>
+<ol>
+<li>最后 <code>STOP</code>，避免回调被提前中断</li>
+</ol>
+<h4 id="a-回调断言最常用">A. 回调断言（最常用）</h4>
+<table><tbody>
+<tr><th>断言类型</th><th>作用</th><th>常用字段</th><th>示例</th></tr>
+<tr><td><code>ASRResult</code></td><td>断言最终 ASR 识别结果</td><td><code>asr</code>、<code>confidence</code>、<code>lang</code></td><td><code>[EXP]ASRResult asr:今天天气怎么样 &lt;timeout=3&gt;</code></td></tr>
+<tr><td><code>cloudASRResult</code></td><td>断言云端 ASR 回调</td><td><code>asr</code>、<code>confidence</code></td><td><code>[EXP]cloudASRResult asr:导航到公司 &lt;timeout=3&gt;</code></td></tr>
+<tr><td><code>NLPResult</code></td><td>断言语义解析结果</td><td><code>skill</code>、<code>intention</code>、<code>tts</code>、<code>text</code></td><td><code>[EXP]NLPResult skill:NAVI;intention:naviPlanRouteToDest &lt;timeout=3&gt;</code></td></tr>
+</tbody></table>
+<p>回调断言支持的操作符：</p>
+<ul>
+<li>精确匹配：<code>value</code></li>
+</ul>
+<ul>
+<li>任意值：<code>*</code></li>
+</ul>
+<ul>
+<li>通配符：<code>*pattern*</code></li>
+</ul>
+<ul>
+<li>或：<code>v1|v2</code></li>
+</ul>
+<ul>
+<li>非：<code>!value</code></li>
+</ul>
+<ul>
+<li>空值/非空：<code>None</code> / <code>!None</code></li>
+</ul>
+<ul>
+<li>比较：<code>&gt;N</code>、<code>&gt;=N</code>、<code>&lt;N</code>、<code>&lt;=N</code></li>
+</ul>
+<ul>
+<li>区间（开区间）：<code>(N~M)</code>，即 <code>N &lt; x &lt; M</code></li>
+</ul>
+<ul>
+<li>包含/不包含：<code>~value</code> / <code>!~value</code></li>
+</ul>
+<ul>
+<li>IN/NOT IN：<code>@in(val)</code> / <code>@notin(val)</code></li>
+</ul>
+<ul>
+<li>忽略大小写：<code>@i(expr)</code></li>
+</ul>
+<ul>
+<li>列表匹配（顺序无关）：<code>[v1,v2,v3]</code></li>
+</ul>
+<ul>
+<li>转义特殊字符：<code>\|</code>、<code>\~</code>、<code>\!</code>、<code>\@</code>、<code>\(</code>、<code>\)</code>、<code>\[</code>、<code>\]</code></li>
+</ul>
+<p>操作符示例（回调字段）：</p>
+<pre><code>
+[EXP]NLPResult skill:WEATHER|NAVI &lt;timeout=3&gt;
+[EXP]ASRResult asr:~天气 &lt;timeout=3&gt;
+[EXP]ASRResult asr:!~报错 &lt;timeout=3&gt;
+[EXP]ASRResult confidence:&gt;=80 &lt;timeout=3&gt;
+[EXP]ASRResult confidence:(60~100) &lt;timeout=3&gt;
+[EXP]NLPResult intention:@in(query) &lt;timeout=3&gt;
+[EXP]NLPResult tts:@notin(错误) &lt;timeout=3&gt;
+[EXP]NLPResult skill:@i(weather) &lt;timeout=3&gt;
+</code></pre>
+<p>回调断言示例（完整链路）：</p>
+<pre><code>
+&gt;&gt;&gt;
+[TSA]START 1
+[TSA]FREEWAKEUP 1
+[TSA]TEXT 导航到公司
+[EXP]ASRResult asr:导航到公司 &lt;timeout=3&gt;
+[EXP]NLPResult skill:NAVI;intention:naviPlanRouteToDest &lt;timeout=3&gt;
+[TSA]STOP
+&lt;&lt;&lt;
+</code></pre>
+<p>更多断言类型，详情见mango仓根目录下：<code>conf/assert_key_value.yaml</code>文件。</p>
+<h4 id="b-sum-计数断言">B. <code>SUM</code> 计数断言</h4>
+<p>用途：</p>
+<ul>
+<li>统计某类回调在当前 case 中匹配到的次数，并进行数量比较。</li>
+</ul>
+<p>语法：</p>
+<pre><code>
+[EXP]SUM [通道]回调类型 COUNT 操作符 数值 &lt;timeout=秒&gt;
+</code></pre>
+<p>参数说明：</p>
+<ul>
+<li><code>通道</code>：可省略；支持单通道 <code>[0]</code>、多通道 <code>[0,1,2,3]</code></li>
+</ul>
+<ul>
+<li><code>回调类型</code>：常用 <code>ASRResult</code>、<code>localASRResult</code>、<code>NLPResult</code>、<code>SpeechWakeup</code></li>
+</ul>
+<ul>
+<li><code>COUNT</code>：固定关键字（大小写不敏感）</li>
+</ul>
+<ul>
+<li><code>操作符</code>：<code>==</code>、<code>!=</code>、<code>&gt;</code>、<code>&lt;</code>、<code>&gt;=</code>、<code>&lt;=</code></li>
+</ul>
+<p>示例：</p>
+<pre><code>
+# 省略通道：统计全通道
+[EXP]SUM ASRResult COUNT == 1 &lt;timeout=3&gt;
+
+# 指定单通道
+[EXP]SUM [0]ASRResult COUNT &gt;= 1 &lt;timeout=3&gt;
+
+# 指定多通道
+[EXP]SUM [0,1,2,3]localASRResult COUNT &lt;= 4 &lt;timeout=3&gt;
+</code></pre>
+<h4 id="c-api-返回断言">C. API 返回断言</h4>
+<table><tbody>
+<tr><th>断言类型</th><th>作用</th><th>常用字段</th><th>示例</th></tr>
+<tr><td><code>GET_VERSION_RET</code></td><td>断言接口返回码/返回字段</td><td><code>code</code>（最常用）</td><td><code>[EXP]GET_VERSION_RET code:0 &lt;timeout=2&gt;</code></td></tr>
+</tbody></table>
+<p>API 断言示例：</p>
+<pre><code>
+&gt;&gt;&gt;
+[TSA]GET_VERSION
+[EXP]GET_VERSION_RET code:0 &lt;timeout=2&gt;
+&lt;&lt;&lt;
+</code></pre>
+<h4 id="d-文件断言">D. 文件断言</h4>
+<table><tbody>
+<tr><th>断言类型</th><th>语法</th><th>参数说明</th><th>示例</th></tr>
+<tr><td><code>FILEEXIT</code></td><td><code>[EXP]FILEEXIT file_path [expected_exists]</code></td><td><code>expected_exists</code>：<code>1</code>存在、<code>0</code>不存在（不传默认断言存在）</td><td><code>[EXP]FILEEXIT {WORKPATH}/callback.jsonl 1</code></td></tr>
+<tr><td><code>FILESIZE</code></td><td><code>[EXP]FILESIZE file_path operator expected_size</code></td><td><code>operator</code>：<code>&gt;</code> <code>&lt;</code> <code>=</code> <code>&gt;=</code> <code>&lt;=</code>；<code>expected_size</code> 为字节数</td><td><code>[EXP]FILESIZE {WORKPATH}/callback.jsonl &gt; 1000</code></td></tr>
+<tr><td><code>FILEMD5</code></td><td><code>[EXP]FILEMD5 file_path = expected_md5</code></td><td>断言文件 MD5 值</td><td><code>[EXP]FILEMD5 {WORKPATH}/download.zip = 5d41402abc4b2a76b9719d911017c592</code></td></tr>
+<tr><td><code>FILEDIF</code></td><td><code>[EXP]FILEDIF JSON file_path json_path_expr</code></td><td>JSON 字段比对（字段路径=期望值）</td><td><code>[EXP]FILEDIF JSON {WORKPATH}/config.json data.timeout=5000</code></td></tr>
+</tbody></table>
+<p>文件断言示例：</p>
+<pre><code>
+&gt;&gt;&gt;
+[EXP]FILEEXIT {WORKPATH}/callback.jsonl 1
+[EXP]FILESIZE {WORKPATH}/callback.jsonl &gt; 1000
+[EXP]FILEMD5 {WORKPATH}/result.bin = 1921u2u192u1921212
+[EXP]FILEDIF JSON {WORKPATH}/daemon_tag.json data.shsh[0].txt.status=0
+&lt;&lt;&lt;
+</code></pre>
+<h4 id="e-日志断言log">E. 日志断言（<code>LOG</code>）</h4>
+<p>语法：</p>
+<pre><code>
+[EXP]LOG 文件名 模式 参数...
+</code></pre>
+<p>1) <code>SEARCH</code>（关键字搜索）</p>
+<pre><code>
+# 存在
+[EXP]LOG sdk.log SEARCH "System Start" EXISTS
+# 不存在
+[EXP]LOG sdk.log SEARCH "[ERROR]" ABSENT
+# 数量比较
+[EXP]LOG sdk.log SEARCH "Retry" COUNT == 3
+</code></pre>
+<p>2) <code>MATCH KV</code>（键值对提取）</p>
+<pre><code>
+[EXP]LOG sdk.log MATCH "add Client" KV "socket_fd" != -1
+[EXP]LOG sdk.log MATCH "add Client" KV "type" == 1
+</code></pre>
+<p>3) <code>MATCH JSON</code>（JSON 路径提取）</p>
+<pre><code>
+[EXP]LOG sdk.log MATCH "API_RESPONSE" JSON "$.code" == 200
+[EXP]LOG sdk.log MATCH "API_RESPONSE" JSON "$.data.meta.total" == 50
+</code></pre>
+<p>4) <code>MATCH EXTRACT</code>（正则提取）</p>
+<pre><code>
+[EXP]LOG sdk.log MATCH "processing completed" EXTRACT /in (\d+)ms/ &lt; 100
+[EXP]LOG sdk.log MATCH "Task-" EXTRACT /Task-([A-Z0-9]+)/ == "A123"
+</code></pre>
+<p>5) <code>DIFF</code>（时延断言）</p>
+<pre><code>
+[EXP]LOG sdk.log DIFF "[REQ]" "[RESP]" &lt; 500ms
+[EXP]LOG sdk.log DIFF "StepA" "StepB" &gt;= 0ms
+</code></pre>
+<h4 id="f-一段可直接套用的-exp-组合模板">F. 一段可直接套用的 EXP 组合模板</h4>
+<pre><code>
+&gt;&gt;&gt;
+[TSA]START 1
+[TSA]TEXT 今天天气怎么样
+[EXP]ASRResult asr:今天天气怎么样 &lt;timeout=3&gt;
+[EXP]SUM ASRResult COUNT &gt;= 1 &lt;timeout=3&gt;
+[EXP]NLPResult skill:WEATHER;intention:QUERY &lt;timeout=3&gt;
+[EXP]LOG sdk.log SEARCH "[ERROR]" ABSENT
+[EXP]LOG sdk.log DIFF "[REQ]" "[RESP]" &lt; 800ms
+[EXP]FILEEXIT {WORKPATH}/callback.jsonl 1
+[TSA]STOP
+&lt;&lt;&lt;
+</code></pre>
+<p>注意事项：</p>
+<ul>
+<li><code>EXP</code> 字段名区分大小写，建议优先参考真实回调字段名。</li>
+</ul>
+<ul>
+<li><code>timeout</code> 过小会导致误判失败，首轮调试建议适当放宽。</li>
+</ul>
+<ul>
+<li><code>LOG</code> 断言是按 case 日志窗口读取，避免跨 case 相互污染。</li>
+</ul>
+<h3 id="64-tsr-客户端suite-统计">6.4 TSR 客户端（suite 统计）</h3>
+<p><code>TSR</code> 是 suite 级统计客户端，建议统一写在 <code>SUITE_TEARDOWN</code>。</p>
+<p>通用语法：</p>
+<pre><code>
+[TSR]指令 result=&lt;结果文件&gt; ref=&lt;参考输入&gt; [其他参数] [output=&lt;报告路径&gt;]
+</code></pre>
+<h4 id="641-指令总览每个都可独立跑">6.4.1 指令总览（每个都可独立跑）</h4>
+<table><tbody>
+<tr><th>指令</th><th>result 输入</th><th>ref 输入</th><th>ref 格式要点</th><th>典型输出</th></tr>
+<tr><td><code>ASR_ACCURACY</code></td><td><code>asr.csv</code></td><td>参考答案 CSV</td><td><code>AUDIOPATH/TEXT</code> 或同义列名（如 <code>voice/ref</code>）</td><td><code>asr_accuracy.xlsx</code></td></tr>
+<tr><td><code>ASR_LANGUAGE</code></td><td><code>asr.csv</code></td><td>语种代码</td><td>直接写语种，如 <code>cmn</code> / <code>en</code> / <code>yue</code></td><td><code>asr_language.xlsx</code></td></tr>
+<tr><td><code>DELAY</code></td><td><code>callback.jsonl</code></td><td>卡拉OK标注文本</td><td><code>&lt;time&gt;字</code> 连续标注，单位秒</td><td><code>delay.xlsx</code></td></tr>
+<tr><td><code>WAKEUP_ACCURACY</code></td><td>唤醒结果 CSV（有表头）</td><td>唤醒参考 CSV（无表头）</td><td><code>音频,关键词,start,end</code></td><td><code>wakeup_accuracy.xlsx</code></td></tr>
+<tr><td><code>VAD_ACCURACY</code></td><td>VAD 结果 txt</td><td>VAD 参考 txt</td><td><code>音频 00h_S start end</code>（空格分隔）</td><td><code>vad_accuracy.xlsx</code></td></tr>
+<tr><td><code>VAD_PRECISION</code></td><td>VAD 结果 txt</td><td>VAD 参考 txt</td><td>同 <code>VAD_ACCURACY</code></td><td><code>vad_precision.xlsx</code></td></tr>
+<tr><td><code>TIME_BOUNDARY_ACCURACY</code></td><td>边界 txt 或 <code>callback.jsonl</code></td><td>边界参考 txt</td><td><code>音频 00h_S start end</code>；可配 <code>threshold/type</code></td><td><code>time_boundary_accuracy.xlsx</code></td></tr>
+<tr><td><code>LLM</code></td><td>任意评测 CSV</td><td>Prompt 模板文件</td><td><code>ref</code> 在该指令中由 <code>prompt=</code> 替代</td><td><code>llm_eval.xlsx</code></td></tr>
+</tbody></table>
+<h4 id="642-各指令详细输入要求">6.4.2 各指令详细输入要求</h4>
+<p>1) <code>ASR_ACCURACY</code></p>
+<ul>
+<li>DSL：</li>
+</ul>
+<pre><code>
+[TSR]ASR_ACCURACY result={WORKPATH}/asr.csv ref=TestCase/ref/cmn_answer.csv output={WORKPATH}/asr_accuracy.xlsx
+</code></pre>
+<ul>
+<li><code>result</code>：CSV（逗号或Tab），至少包含 <code>voice</code>、<code>result</code>、<code>type</code>（<code>confidence</code> 可选）</li>
+</ul>
+<ul>
+<li>类型过滤：仅统计最终 <code>*ASRResult</code>，自动过滤 <code>*ASRResultTemp</code></li>
+</ul>
+<ul>
+<li><code>ref</code>：答案 CSV，需包含“音频路径 + 标准文本”</li>
+</ul>
+<p>2) <code>ASR_LANGUAGE</code></p>
+<ul>
+<li>DSL：</li>
+</ul>
+<pre><code>
+[TSR]ASR_LANGUAGE result={WORKPATH}/asr.csv ref=cmn output={WORKPATH}/asr_language.xlsx
+</code></pre>
+<ul>
+<li><code>result</code>：CSV，需有 <code>voice</code>、<code>lang</code>、<code>type</code></li>
+</ul>
+<ul>
+<li><code>ref</code>：期望语种代码（不是文件），如 <code>cmn</code>、<code>en</code>、<code>yue</code></li>
+</ul>
+<ul>
+<li>规则：语种大小写不敏感，<code>zh-cmn</code> 自动归一为 <code>cmn</code></li>
+</ul>
+<p>3) <code>DELAY</code></p>
+<ul>
+<li>DSL（实时）：</li>
+</ul>
+<pre><code>
+[TSR]DELAY ref=TestCase/ref/label.txt result={WORKPATH}/callback.jsonl type=PSTTASRResultTemp output={WORKPATH}/delay.xlsx
+</code></pre>
+<ul>
+<li>DSL（最终）：</li>
+</ul>
+<pre><code>
+[TSR]DELAY ref=TestCase/ref/label.txt result={WORKPATH}/callback.jsonl type=PSTTASRResult output={WORKPATH}/delay.xlsx
+</code></pre>
+<ul>
+<li><code>result</code>：<code>callback.jsonl</code>，需含 <code>callback_type</code>、<code>data.audio</code>、<code>data.audiotime</code>、<code>data.asr</code></li>
+</ul>
+<ul>
+<li><code>ref</code>：卡拉OK标注文本，每行形如：<code>音频路径 &lt;0.3&gt;打&lt;0.5&gt;开&lt;0.8&gt;</code></li>
+</ul>
+<ul>
+<li><code>type</code>：以 <code>Temp</code> 结尾表示实时上屏；否则为最终结果时延</li>
+</ul>
+<p>4) <code>WAKEUP_ACCURACY</code></p>
+<ul>
+<li>DSL：</li>
+</ul>
+<pre><code>
+[TSR]WAKEUP_ACCURACY result={WORKPATH}/wakeup.csv ref=TestCase/ref/wakeup_ref.csv output={WORKPATH}/wakeup_accuracy.xlsx
+</code></pre>
+<ul>
+<li><code>result</code>：有表头 CSV，字段：<code>audio,result,start,end</code></li>
+</ul>
+<ul>
+<li><code>ref</code>：无表头 CSV，列顺序固定：<code>音频路径,关键词,开始(s),结束(s)</code></li>
+</ul>
+<p>5) <code>VAD_ACCURACY</code></p>
+<ul>
+<li>DSL：</li>
+</ul>
+<pre><code>
+[TSR]VAD_ACCURACY result={WORKPATH}/vad.txt ref=TestCase/ref/vad_ref.txt output={WORKPATH}/vad_accuracy.xlsx
+</code></pre>
+<ul>
+<li><code>result/ref</code>：同格式 txt，空格分隔，无表头：<code>音频路径 00h_S 开始(s) 结束(s)</code></li>
+</ul>
+<p>6) <code>VAD_PRECISION</code></p>
+<ul>
+<li>DSL：</li>
+</ul>
+<pre><code>
+[TSR]VAD_PRECISION result={WORKPATH}/vad.txt ref=TestCase/ref/vad_ref.txt output={WORKPATH}/vad_precision.xlsx
+</code></pre>
+<ul>
+<li>输入格式与 <code>VAD_ACCURACY</code> 完全一致</li>
+</ul>
+<ul>
+<li>作用：统计 start/end 时间边界误差分布（不是 FA/FR）</li>
+</ul>
+<p>7) <code>TIME_BOUNDARY_ACCURACY</code></p>
+<ul>
+<li>DSL：</li>
+</ul>
+<pre><code>
+[TSR]TIME_BOUNDARY_ACCURACY result={WORKPATH}/callback.jsonl ref=TestAudio/SDK/time_boundary/0_output_timelist.txt output={WORKPATH}/time_boundary_accuracy.xlsx threshold=0.3 type=both
+</code></pre>
+<ul>
+<li><code>result</code>：可用边界 txt 或 <code>callback.jsonl</code></li>
+</ul>
+<ul>
+<li><code>ref</code>：边界参考 txt（<code>音频 00h_S start end</code>）</li>
+</ul>
+<ul>
+<li>常用参数：</li>
+<ul>
+<li><code>threshold</code>：阈值（秒），超阈值在报告中标红</li>
+</ul>
+<ul>
+<li><code>type</code>：<code>ASRResult</code> / <code>localASRResult</code> / <code>cloudASRResult</code> / <code>both</code></li>
+</ul>
+</ul>
+<p>8) <code>LLM</code></p>
+<ul>
+<li>DSL：</li>
+</ul>
+<pre><code>
+[TSR]LLM result={WORKPATH}/nlu_result.csv prompt=TestCase/eval_prompts.txt output={WORKPATH}/llm_eval.xlsx batch=10
+</code></pre>
+<ul>
+<li><code>result</code>：待评测 CSV（列名可自定义）</li>
+</ul>
+<ul>
+<li><code>prompt</code>：模板文本文件，使用 <code>{列名}</code> 占位</li>
+</ul>
+<ul>
+<li>额外依赖环境变量：<code>DEEPSEEK_API_KEY</code>（必需）</li>
+</ul>
+<h4 id="643-推荐写法">6.4.3 推荐写法</h4>
+<pre><code>
+&gt;&gt;&gt; SUITE_TEARDOWN
+[TSR]ASR_ACCURACY result={WORKPATH}/asr.csv ref=TestCase/ref/cmn_answer.csv output={WORKPATH}/asr_accuracy.xlsx
+[TSR]ASR_LANGUAGE result={WORKPATH}/asr.csv ref=cmn output={WORKPATH}/asr_language.xlsx
+[TSR]DELAY ref=TestCase/ref/label.txt result={WORKPATH}/callback.jsonl type=PSTTASRResultTemp output={WORKPATH}/delay_temp.xlsx
+[TSR]DELAY ref=TestCase/ref/label.txt result={WORKPATH}/callback.jsonl type=PSTTASRResult output={WORKPATH}/delay_final.xlsx
+&lt;&lt;&lt;
+</code></pre>
+<h3 id="65-完整-case-模板">6.5 完整 Case 模板</h3>
+<pre><code>
+&gt;&gt;&gt; SETUP
+[SYS]PULL AIBSServer cmn {"brand":"0"}
+[SYS]SLEEP 2
+[TSA]CREATE cmn com.autoai.vr.service_vrassistant
+&lt;&lt;&lt;
+
+# 天气查询-冒烟
+&gt;&gt;&gt;
+[TSA]START 1
+[TSA]FREEWAKEUP 1
+[TSA]STRATEGY 1
+[TSA]TEXT 今天天气怎么样
+[EXP]NLPResult skill:WEATHER;intention:QUERY &lt;timeout=2&gt;
+[EXP]LOG sdk.log SEARCH "[ERROR]" ABSENT
+[TSA]STOP
+&lt;&lt;&lt;
+
+&gt;&gt;&gt; TEARDOWN
+[TSA]FREE
+[SYS]KILL AIBSServer
+&lt;&lt;&lt;
+
+&gt;&gt;&gt; SUITE_TEARDOWN
+[TSR]ASR_LANGUAGE result={WORKPATH}/asr.csv ref=cmn output={WORKPATH}/asr_language.xlsx
+&lt;&lt;&lt;
+</code></pre>
+<hr />
+<h2 id="7-环境变量篇">7. 环境变量篇</h2>
+<h3 id="71-语法与作用">7.1 语法与作用</h3>
+<ul>
+<li>环境变量语法：<code>{VARIABLE_NAME}</code></li>
+</ul>
+<ul>
+<li>动态表达式语法：<code>{EVAL:python_expression}</code></li>
+</ul>
+<ul>
+<li>作用：消除硬编码路径/名称，让同一份用例在不同机器、不同 workspace 下可复用。</li>
+</ul>
+<p>示例：</p>
+<pre><code>
+[TSA]DATA {WORKPATH}/audio/test.wav
+[SYS]CMD cp {CONFIGPATH} {WORKPATH}/backup.conf
+[SYS]PRINT Suite={SUITENAME}, ID={SUITEID}, TS={TIMESTAMP}
+</code></pre>
+<h3 id="72-变量清单与代码一致">7.2 变量清单（与代码一致）</h3>
+<blockquote>
+<p>变量来源：<code>src/testsuite/NANO/config.py</code> 中 <code>ENVIRONMENT_VARIABLES</code>。</p>
+</blockquote>
+<table><tbody>
+<tr><th>分类</th><th>变量</th><th>含义</th></tr>
+<tr><td>路径</td><td><code>{WORKPATH}</code></td><td>Suite 工作目录</td></tr>
+<tr><td>路径</td><td><code>{ROOTPATH}</code></td><td>项目根目录</td></tr>
+<tr><td>路径</td><td><code>{WORKSPACE}</code></td><td>工作空间路径</td></tr>
+<tr><td>路径</td><td><code>{BASEPATH}</code></td><td>并发模式下当前 worker 的基路径</td></tr>
+<tr><td>路径</td><td><code>{LIBPATH}</code></td><td>库文件路径</td></tr>
+<tr><td>路径</td><td><code>{CASEPATH}</code></td><td>用例目录路径</td></tr>
+<tr><td>路径</td><td><code>{LOGPATH}</code></td><td>日志目录路径</td></tr>
+<tr><td>路径</td><td><code>{SOCKETPATH}</code></td><td>Socket 端口文件路径</td></tr>
+<tr><td>配置</td><td><code>{CONFIGPATH}</code></td><td>解码配置路径</td></tr>
+<tr><td>配置</td><td><code>{CARPLAYCONFIG}</code></td><td>CarPlay 配置路径</td></tr>
+<tr><td>配置</td><td><code>{LCSCONFIG}</code></td><td>LCS 配置路径</td></tr>
+<tr><td>配置</td><td><code>{CASELIST}</code></td><td>用例列表路径</td></tr>
+<tr><td>配置</td><td><code>{PARAMETERIZEDATA}</code></td><td>参数化数据文件路径</td></tr>
+<tr><td>元数据</td><td><code>{SUITEID}</code></td><td>Suite ID</td></tr>
+<tr><td>元数据</td><td><code>{SUITENAME}</code></td><td>Suite 名称</td></tr>
+<tr><td>元数据</td><td><code>{CASEID}</code></td><td>CaseID 名称</td></tr>
+<tr><td>动态</td><td><code>{UUID}</code></td><td>随机 UUID</td></tr>
+<tr><td>动态</td><td><code>{TIMESTAMP}</code></td><td>当前时间戳</td></tr>
+<tr><td>动态</td><td><code>{NOW}</code></td><td>当前日期时间</td></tr>
+</tbody></table>
+<h3 id="73-实战用法">7.3 实战用法</h3>
+<p>1) 路径组装（最常用）：</p>
+<pre><code>
+[SYS]CMD mkdir -p {WORKPATH}/output
+[SYS]CMD cp {CONFIGPATH} {WORKPATH}/decoder.conf.bak
+[TSA]DATA {WORKPATH}/audio/query.wav
+</code></pre>
+<p>3) 运行时表达式（<code>EVAL</code>）：</p>
+<pre><code>
+[SYS]PRINT 当前时间: {EVAL:datetime.datetime.now().strftime('%H:%M:%S')}
+[SYS]PRINT 明日日期: {EVAL:get_date(1)}
+</code></pre>
+<h3 id="74-注意事项">7.4 注意事项</h3>
+<ul>
+<li>只替换 <code>{VAR}</code>，不会替换 <code>${var}</code>（<code>${}</code> 是参数化变量体系）。</li>
+</ul>
+<ul>
+<li>变量名必须全大写；未定义变量会保留原样。</li>
+</ul>
+<ul>
+<li><code>EVAL</code> 执行失败时会保留原表达式并记录日志，建议先小范围验证。</li>
+</ul>
+<hr />
+<h2 id="8-测试用例编写篇">8. 测试用例编写篇</h2>
+<h3 id="81-sdk-用例">8.1 SDK 用例</h3>
+<p>关注接口链路：<code>CREATE -&gt; START -&gt; DATA/TEXT -&gt; EXP -&gt; STOP -&gt; FREE</code></p>
+<p>编写步骤（建议）：</p>
+<ol>
+<li>先在 <code>SETUP</code> 拉起服务并 <code>CREATE</code> 客户端。</li>
+</ol>
+<ol>
+<li>在 <code>TEST</code> 块里只保留一条主链路动作（<code>DATA</code> 或 <code>TEXT</code>），避免一个 case 混太多目标。</li>
+</ol>
+<ol>
+<li>主断言优先写 <code>ASRResult/NLPResult</code>，再补 <code>LOG</code> 防回归断言。</li>
+</ol>
+<ol>
+<li>在 <code>TEARDOWN</code> 统一 <code>STOP/FREE/KILL</code>，保证 case 间相互隔离。</li>
+</ol>
+<p>常见可调参数：</p>
+<ul>
+<li><code>[TSA]DATA ... frame=320/640</code>：分帧大小</li>
+</ul>
+<ul>
+<li><code>[TSA]DATA ... delay=1</code>：送音节奏（秒）</li>
+</ul>
+<ul>
+<li><code>[TSA]FREEWAKEUP 0/1</code>：是否免唤醒</li>
+</ul>
+<ul>
+<li><code>[TSA]STRATEGY 0/1/2</code>：识别策略</li>
+</ul>
+<p>示例：</p>
+<pre><code>
+&gt;&gt;&gt; SETUP
+[SYS]PULL AIBSServer cmn {"brand":"0"}
+[SYS]PULL LCSEngine cmn
+[TSA]CREATE cmn com.autoai.vr.service_vrassistant
+&lt;&lt;&lt;
+
+&gt;&gt;&gt;
+[TSA]START 1
+[TSA]DATA {WORKPATH}/audio/test.wav frame=320 delay=1
+[EXP]ASRResult asr:打开空调 &lt;timeout=3&gt;
+[EXP]LOG sdk.log SEARCH "[ERROR]" ABSENT
+[TSA]STOP
+&lt;&lt;&lt;
+
+&gt;&gt;&gt; TEARDOWN
+[TSA]FREE
+[SYS]KILL LCSEngine
+[SYS]KILL AIBSServer
+&lt;&lt;&lt;
+</code></pre>
+<h3 id="82-nlu-用例">8.2 NLU 用例</h3>
+<p>关注 skill/intention 是否匹配。</p>
+<p>编写要点：</p>
+<ul>
+<li>文本用例优先使用 <code>[TSA]TEXT</code>，语音语义用例可用 <code>[TSA]DATA</code> + <code>NLPResult</code>。</li>
+</ul>
+<ul>
+<li><code>NLPResult</code> 至少断言 <code>skill</code> 和 <code>intention</code>；关键场景再补 <code>tts</code> 或 <code>directivesType</code>。</li>
+</ul>
+<ul>
+<li>推荐同时加一条 <code>SUM</code> 或 <code>LOG</code> 断言，避免“语义对了但过程异常”漏检。</li>
+</ul>
+<p>示例：</p>
+<pre><code>
+&gt;&gt;&gt;
+[TSA]START 1
+[TSA]FREEWAKEUP 1
+[TSA]STRATEGY 1
+[TSA]TEXT 导航到公司
+[EXP]NLPResult skill:NAVI;intention:naviPlanRouteToDest &lt;timeout=2&gt;
+[EXP]SUM NLPResult COUNT &gt;= 1 &lt;timeout=2&gt;
+[TSA]STOP
+&lt;&lt;&lt;
+</code></pre>
+<p>推荐目录组织：</p>
+<ul>
+<li>用例：<code>TestCase/caselist/.../*.mgo</code></li>
+</ul>
+<ul>
+<li>参数化：<code>TestCase/data/*.csv</code></li>
+</ul>
+<ul>
+<li>引用事件：<code>TestCase/caselist/.../event/*.json</code></li>
+</ul>
+<hr />
+<h2 id="9-结果查看与日志定位">9. 结果查看与日志定位</h2>
+<h3 id="91-主要产物">9.1 主要产物</h3>
+<ul>
+<li><code>asr.csv</code>：识别结果汇总</li>
+</ul>
+<ul>
+<li><code>wakeup.csv</code>：唤醒结果汇总</li>
+</ul>
+<ul>
+<li><code>callback.jsonl</code>：全量回调记录</li>
+</ul>
+<ul>
+<li>Allure 报告目录：suite 的 <code>report/</code> 目录</li>
+</ul>
+<ul>
+<li><code>workspace/.../log/</code>：运行日志（含客户端日志、执行日志）</li>
+</ul>
+<ul>
+<li><code>workspace/.../allure_result/</code>：Allure 原始结果</li>
+</ul>
+<ul>
+<li><code>workspace/.../mango_report/</code>：TSR 统计报告（xlsx/html）</li>
+</ul>
+<h3 id="92-日志在哪看">9.2 日志在哪看</h3>
+<p>优先顺序：</p>
+<ol>
+<li>终端实时输出</li>
+</ol>
+<ol>
+<li>suite 目录下 <code>log/</code> 文件</li>
+</ol>
+<ol>
+<li><code>callback.jsonl</code> 回放关键回调</li>
+</ol>
+<ol>
+<li>Allure 中的失败步骤与附件</li>
+</ol>
+<p>快速定位建议：</p>
+<ul>
+<li>看失败 case 名称后，先定位同名 suite 目录。</li>
+</ul>
+<ul>
+<li>在 <code>callback.jsonl</code> 中按音频名/时间段查对应回调。</li>
+</ul>
+<ul>
+<li><code>EXP</code> 失败先确认“没回调”还是“字段不匹配”，两者排查路径不同。</li>
+</ul>
+<h3 id="93-常见排障路径">9.3 常见排障路径</h3>
+<ol>
+<li>先看主断言失败点（功能是否没返回）</li>
+</ol>
+<ol>
+<li>再看 <code>LOG</code> 断言（是否有异常日志）</li>
+</ol>
+<ol>
+<li>最后看 <code>callback.jsonl</code> 的回调时序</li>
+</ol>
+<p>建议排障闭环：</p>
+<ol>
+<li>复现失败（固定 <code>-F</code> 行范围、必要时加 <code>-R 1</code>）</li>
+</ol>
+<ol>
+<li>缩小范围（只跑单个 case / 单条参数化行）</li>
+</ol>
+<ol>
+<li>对比成功样本（同场景同参数）找差异</li>
+</ol>
+<ol>
+<li>输出最小复现命令，便于研发联调</li>
+</ol>
+<hr />
+<h2 id="10-文档索引功能查阅导航">10. 文档索引（功能查阅导航）</h2>
+<p>当你需要定位某个功能时，优先按下表查文档：</p>
+<table><tbody>
+<tr><th>需求场景</th><th>建议先看文档</th><th>说明</th></tr>
+<tr><td>新人快速上手、部署、参数、用例编写</td><td><code>doc/Mango_测试使用说明.md</code></td><td>统一入口文档，覆盖日常测试执行主链路</td></tr>
+<tr><td>查看 v3.6.0 新增/修复内容</td><td><code>doc/RELEASE_V3.6.0.md</code></td><td>包含 CarPlay、LOG断言、Case级参数化、BREF 等版本变化</td></tr>
+<tr><td>查看 v3.7.0 新增/修复内容</td><td><code>doc/RELEASE_V3.7.0.md</code></td><td>包含 TSR 体系、PIS/ENR 客户端、并发与报告增强</td></tr>
+<tr><td>查某个 DSL 指令语法/参数</td><td><code>src/testsuite/NANO/doc/COMMAND.md</code></td><td>指令全集，按客户端分类，含语法与示例</td></tr>
+<tr><td>查断言系统（EXP）细节</td><td><code>src/testsuite/NANO/doc/EXPECT.md</code></td><td>回调/API/文件/SUM 等断言说明</td></tr>
+<tr><td>查日志断言（LOG）高级玩法</td><td><code>src/testsuite/NANO/doc/LOG_ASSERTION.md</code></td><td>SEARCH/MATCH/DIFF 及窗口机制</td></tr>
+<tr><td>查环境变量与 EVAL</td><td><code>src/testsuite/NANO/doc/ENV.md</code></td><td><code>{WORKPATH}</code> 等变量和 <code>{EVAL:...}</code> 用法</td></tr>
+<tr><td>查 TSR 指令输入格式与报告字段</td><td><code>src/testsuite/NANO/doc/TSR.md</code></td><td>ASR/DELAY/WAKEUP/VAD/LLM 全部统计指令</td></tr>
+</tbody></table>
+<p>推荐查阅顺序：</p>
+<ol>
+<li>先在 <code>doc/Mango_测试使用说明.md</code> 找“功能入口”和标准用法。</li>
+</ol>
+<ol>
+<li>再到专项文档（<code>COMMAND.md</code> / <code>EXPECT.md</code> / <code>TSR.md</code> / <code>ENV.md</code>）看参数细节。</li>
+</ol>
+<ol>
+<li>最后用 <code>doc/RELEASE_V3.6.0.md</code>、<code>doc/RELEASE_V3.7.0.md</code> 确认版本差异与兼容性。</li>
+</ol>
+<hr />
+<h2 id="11-常见问题">11. 常见问题</h2>
+<h3 id="111-参数化不生效">11.1 参数化不生效</h3>
+<ul>
+<li>case 中没有 <code>${}</code></li>
+</ul>
+<ul>
+<li>没传 <code>-P</code> 且没写 <code>&gt;&gt;&gt; PARAMETER xxx.csv</code></li>
+</ul>
+<ul>
+<li><code>-PF</code> 把数据过滤空了</li>
+</ul>
+<ul>
+<li>CSV 表头与 <code>${变量名}</code> 不一致（大小写不一致）</li>
+</ul>
+<ul>
+<li><code>-S</code> 文件缺少 <code>CaseID</code> / <code>StepCase</code> 列</li>
+</ul>
+<h3 id="112-用例跑不起来">11.2 用例跑不起来</h3>
+<ul>
+<li><code>-C</code> 或 <code>-a</code> 路径错误</li>
+</ul>
+<ul>
+<li>项目参数 <code>-b</code> 不匹配</li>
+</ul>
+<ul>
+<li>服务未拉起（检查 <code>SYS PULL</code>）</li>
+</ul>
+<ul>
+<li><code>TestCase/TestResource/TestAudio</code> 软链接失效</li>
+</ul>
+<ul>
+<li><code>-p</code>（LCS 配置）未传或文件不存在（LCS 依赖环境必填）</li>
+</ul>
+<h3 id="113-docker-模式路径错误">11.3 Docker 模式路径错误</h3>
+<ul>
+<li>命令里应使用容器内路径（如 <code>TestCase/...</code>）</li>
+</ul>
+<ul>
+<li><code>-v</code> 宿主机路径必须真实存在</li>
+</ul>
+<ul>
+<li>挂载只读导致写失败（需要时改为 <code>:rw</code>）</li>
+</ul>
+<ul>
+<li>容器内外路径混用（宿主机绝对路径不能直接给容器内命令）</li>
+</ul>
+<h3 id="114-exp-断言总是超时">11.4 EXP 断言总是超时</h3>
+<ul>
+<li><code>timeout</code> 太短，先放宽到 <code>3~5s</code> 验证链路</li>
+</ul>
+<ul>
+<li>断言类型不匹配（例如应使用 <code>NLPResult</code> 却写成 <code>ASRResult</code>）</li>
+</ul>
+<ul>
+<li><code>START/STOP</code> 时序不对，回调尚未产生就结束会话</li>
+</ul>
+<h3 id="115-tsr-报告为空或数据异常">11.5 TSR 报告为空或数据异常</h3>
+<ul>
+<li><code>result/ref</code> 文件格式不符合指令要求（表头、分隔符、列顺序）</li>
+</ul>
+<ul>
+<li><code>DELAY</code> 的 <code>type</code> 与 <code>callback_type</code> 不一致（大小写敏感）</li>
+</ul>
+<ul>
+<li>路径里环境变量未正确替换（确认 <code>{WORKPATH}</code> 是否有效）</li>
+</ul>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

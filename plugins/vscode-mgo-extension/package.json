@@ -1,0 +1,42 @@
+{
+  "name": "mango-nano-mgo",
+  "displayName": "Mango NANO MGO",
+  "description": "VSCode language support for Mango NANO .mgo DSL.",
+  "version": "0.0.4",
+  "publisher": "mango-internal",
+  "license": "UNLICENSED",
+  "private": true,
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "activationEvents": [
+    "workspaceContains:**/*.mgo"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "nano-mgo",
+        "aliases": [
+          "Mango NANO DSL",
+          "nano-mgo",
+          "mgo"
+        ],
+        "extensions": [
+          ".mgo"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "nano-mgo",
+        "scopeName": "source.nano-mgo",
+        "path": "./syntaxes/nano-mgo.tmLanguage.json"
+      }
+    ]
+  }
+}

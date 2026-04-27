@@ -1,0 +1,9 @@
+id: suite-kpi-plugin
+name: Suite KPI Dashboard
+description: Custom suite summary dashboard for Pachira tests
+jsFiles:
+  - index.js
+cssFiles:
+  - styles.css
+extensions:
+  - com.pachira.allure.SuiteKpiAggregator

@@ -1,0 +1,12 @@
+# 忽略文件夹以及文件夹下的内容
+__pycache__
+.vscode
+workspace
+log
+.idea
+lib
+TestAudio
+TestCase
+TestResource
+.DS_Store
+._*

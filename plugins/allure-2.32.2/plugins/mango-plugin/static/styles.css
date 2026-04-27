@@ -1,0 +1,449 @@
+/* ================================================================
+   Mango Plugin Styles
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   Tab 页：容器与标题
+   ---------------------------------------------------------------- */
+.mango-container {
+    padding: 24px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    color: #333;
+}
+
+.mango-main-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 20px 0;
+    color: #2c3e50;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 10px;
+}
+
+/* ----------------------------------------------------------------
+   Solution 卡片
+   ---------------------------------------------------------------- */
+.mango-card {
+    border: 1px solid #dde3ea;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
+}
+
+.mango-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Solution 层（最深色） */
+.mango-level-solution {
+    background: linear-gradient(135deg, #1a2d45, #2980b9);
+    color: #fff;
+}
+
+.mango-card-body {
+    padding: 12px;
+    background: #fafbfc;
+}
+
+/* ----------------------------------------------------------------
+   Define / Scene 块
+   ---------------------------------------------------------------- */
+.mango-scene-block {
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.mango-scene-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Define/Scene 层（中间色） */
+.mango-level-scene {
+    background: #eef4fb;
+    color: #2c4a6e;
+    border-bottom: 1px solid #d5e5f5;
+}
+
+.mango-header-label {
+    font-weight: 600;
+    font-size: 13px;
+}
+
+/* ----------------------------------------------------------------
+   徽章
+   ---------------------------------------------------------------- */
+.mango-header-stats {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.mango-badge {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.mango-badge-total { background: rgba(255,255,255,0.25); color: inherit; }
+.mango-badge-pass  { background: #d4edda; color: #155724; }
+.mango-badge-fail  { background: #f8d7da; color: #721c24; }
+
+/* Solution 层中的 badge 颜色要在深色背景上显示 */
+.mango-level-solution .mango-badge-total { background: rgba(255,255,255,0.20); color: #eaf4ff; }
+.mango-level-solution .mango-badge-pass  { background: rgba(46,204,113,0.35);  color: #d5ffe8; }
+.mango-level-solution .mango-badge-fail  { background: rgba(231,76,60,0.35);   color: #ffe5e3; }
+
+/* ----------------------------------------------------------------
+   进度条
+   ---------------------------------------------------------------- */
+.mango-progress {
+    position: relative;
+    width: 110px;
+    height: 16px;
+    background: rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.mango-progress-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 8px;
+    transition: width 0.4s ease;
+}
+
+.mango-bar-pass { background: linear-gradient(90deg, #27ae60, #52d68a); }
+.mango-bar-fail { background: linear-gradient(90deg, #c0392b, #e74c3c); }
+
+.mango-progress-label {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    letter-spacing: 0.3px;
+}
+
+/* ----------------------------------------------------------------
+   Suite 统计表格
+   ---------------------------------------------------------------- */
+.mango-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+}
+
+.mango-table th {
+    background: #f1f5f9;
+    padding: 7px 10px;
+    text-align: left;
+    font-weight: 600;
+    color: #4a5568;
+    border-bottom: 2px solid #e2e8f0;
+    white-space: nowrap;
+}
+
+.mango-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid #f0f4f8;
+    vertical-align: middle;
+}
+
+.mango-table tr:last-child td {
+    border-bottom: none;
+}
+
+.mango-table tbody tr:hover {
+    background: #f7fafd !important;
+}
+
+/* Suite 行背景色：通过/失败 */
+.mango-row-pass { background: #f8fff9; }
+.mango-row-fail { background: #fff8f8; }
+
+/* 数字列居中 */
+.mango-num { text-align: center; }
+
+/* 通过/失败/跳过 文字颜色 */
+.mango-text-pass { color: #27ae60; font-weight: 700; }
+.mango-text-fail { color: #e74c3c; font-weight: 700; }
+.mango-text-skip { color: #95a5a6; }
+
+/* Suite 名称列 */
+.mango-suite-name {
+    font-weight: 500;
+    max-width: 320px;
+    word-break: break-word;
+    line-height: 1.4;
+}
+
+/* 状态列 */
+.mango-status {
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* 进度条列宽度 */
+.mango-progress-cell {
+    min-width: 120px;
+}
+
+/* 空状态提示 */
+.mango-empty {
+    color: #aaa;
+    padding: 10px 14px;
+    font-style: italic;
+    font-size: 12px;
+}
+
+.mango-empty-hint {
+    background: #fffbe6;
+    border: 1px solid #ffe58f;
+    border-radius: 6px;
+    padding: 16px 20px;
+    color: #856404;
+    line-height: 1.7;
+}
+
+/* ----------------------------------------------------------------
+   子 Tab 导航条
+   ---------------------------------------------------------------- */
+.mango-subtab-nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border-bottom: 2px solid #e2e8f0;
+    margin-bottom: 20px;
+    padding-bottom: 0;
+}
+
+.mango-subtab {
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #5a6a7e;
+    cursor: pointer;
+    border-radius: 4px 4px 0 0;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.mango-subtab:hover {
+    color: #3498db;
+    background: #f0f6ff;
+}
+
+.mango-subtab-active {
+    color: #3498db !important;
+    border-bottom-color: #3498db !important;
+    font-weight: 700;
+}
+
+/* ----------------------------------------------------------------
+   测试统计 Pane：内容过多时出现纵向滚动条
+   ---------------------------------------------------------------- */
+#mango-pane-stats {
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
+/* ----------------------------------------------------------------
+   Suite 报告：整体布局（左树 + 右 iframe）
+   ---------------------------------------------------------------- */
+.mango-reports-layout {
+    display: flex;
+    gap: 0;
+    height: calc(100vh - 200px);
+    min-height: 500px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+/* 左侧导航树 */
+.mango-reports-tree {
+    width: 280px;
+    min-width: 200px;
+    max-width: 360px;
+    flex-shrink: 0;
+    overflow-y: auto;
+    background: #f8fafc;
+    border-right: 1px solid #e2e8f0;
+    padding: 10px 0;
+}
+
+/* 右侧内容区（iframe 容器） */
+.mango-reports-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #fff;
+}
+
+/* ----------------------------------------------------------------
+   报告树：Define 节点
+   ---------------------------------------------------------------- */
+.mango-tree-define {
+    margin-bottom: 2px;
+}
+
+.mango-tree-define-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    font-weight: 600;
+    font-size: 12px;
+    color: #2c4a6e;
+    background: #eef4fb;
+    cursor: pointer;
+    user-select: none;
+    border-left: 3px solid #3498db;
+    transition: background 0.15s;
+}
+
+.mango-tree-define-header:hover {
+    background: #deeaf8;
+}
+
+.mango-tree-define-body {
+    padding-left: 8px;
+}
+
+/* ----------------------------------------------------------------
+   报告树：Suite 节点
+   ---------------------------------------------------------------- */
+.mango-tree-suite {
+    margin: 2px 4px 2px 0;
+}
+
+.mango-tree-suite-header {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: #3d566e;
+    background: #f4f7fa;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 3px;
+    transition: background 0.15s;
+}
+
+.mango-tree-suite-header:hover {
+    background: #e8f0f8;
+}
+
+.mango-tree-suite-body {
+    padding-left: 16px;
+}
+
+/* ----------------------------------------------------------------
+   报告树：报告条目
+   ---------------------------------------------------------------- */
+.mango-tree-report {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    font-size: 11.5px;
+    color: #4a6fa5;
+    cursor: pointer;
+    border-radius: 3px;
+    margin: 1px 4px 1px 0;
+    transition: background 0.12s, color 0.12s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mango-tree-report:hover {
+    background: #dbeaff;
+    color: #1a5fb4;
+}
+
+.mango-tree-report-active {
+    background: #3498db !important;
+    color: #fff !important;
+    font-weight: 600;
+}
+
+/* 折叠/展开箭头 */
+.mango-tree-arrow {
+    font-size: 9px;
+    width: 12px;
+    flex-shrink: 0;
+    color: #7f9eb8;
+}
+
+.mango-tree-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ----------------------------------------------------------------
+   右侧 iframe 与提示
+   ---------------------------------------------------------------- */
+.mango-iframe-hint {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9db2c8;
+    font-size: 14px;
+    font-style: italic;
+    background: #f8fafc;
+}
+
+.mango-report-iframe {
+    width: 100%;
+    flex: 1;
+    border: none;
+}
+
+/* ----------------------------------------------------------------
+   空态 / 加载中
+   ---------------------------------------------------------------- */
+.mango-tree-loading,
+.mango-tree-empty {
+    padding: 20px 16px;
+    font-size: 12px;
+    color: #9db2c8;
+    text-align: center;
+    line-height: 1.8;
+}
+

@@ -1,0 +1,258 @@
+{
+  "name": "Mango NANO DSL",
+  "scopeName": "source.nano-mgo",
+  "fileTypes": ["mgo"],
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#blocks" },
+    { "include": "#vrConfigLines" },
+      { "include": "#setParamLines" },
+    { "include": "#expLines" },
+    { "include": "#clientLines" },
+    { "include": "#variables" },
+    { "include": "#timeout" },
+    { "include": "#operators" },
+    { "include": "#keys" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#keywords" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.number-sign.nano-mgo",
+          "match": "^\\s*#.*$"
+        },
+        {
+          "name": "comment.line.double-slash.nano-mgo",
+          "match": "^\\s*//.*$"
+        },
+        {
+          "name": "comment.line.number-sign.inline.nano-mgo",
+          "match": "(?<=\\s)#.*$"
+        }
+      ]
+    },
+    "blocks": {
+      "patterns": [
+        {
+          "name": "meta.block.fixture.nano-mgo",
+          "match": "^(\\s*)(>>>)(\\s+)([A-Z][A-Z0-9_]*)(\\s*)$",
+          "captures": {
+            "2": { "name": "punctuation.definition.block.begin.nano-mgo" },
+            "4": { "name": "keyword.control.fixture.nano-mgo" }
+          }
+        },
+        {
+          "name": "meta.block.parameter.nano-mgo",
+          "match": "^(\\s*)(>>>)(\\s+)(PARAMETER)(\\s+)(\\S+)(\\s*)$",
+          "captures": {
+            "2": { "name": "punctuation.definition.block.begin.nano-mgo" },
+            "4": { "name": "keyword.control.parameter.nano-mgo" },
+            "6": { "name": "string.unquoted.parameter-file.nano-mgo" }
+          }
+        },
+        {
+          "name": "meta.block.repeat.nano-mgo",
+          "match": "^(\\s*)(>>>)(\\s+)(\\d+)(\\s*)$",
+          "captures": {
+            "2": { "name": "punctuation.definition.block.begin.nano-mgo" },
+            "4": { "name": "constant.numeric.repeat-count.nano-mgo" }
+          }
+        },
+        {
+          "name": "meta.block.test.nano-mgo",
+          "match": "^(\\s*)(>>>)(\\s*)$",
+          "captures": {
+            "2": { "name": "punctuation.definition.block.begin.nano-mgo" }
+          }
+        },
+        {
+          "name": "meta.block.end.nano-mgo",
+          "match": "^(\\s*)(<<<)(\\s*)$",
+          "captures": {
+            "2": { "name": "punctuation.definition.block.end.nano-mgo" }
+          }
+        }
+      ]
+    },
+    "vrConfigLines": {
+      "patterns": [
+        {
+          "name": "meta.command.vr-config.nano-mgo",
+          "match": "(\\[(?:TSA|SET|TTS|VOI|OMS|NIS|NSE)\\])(SETVRCONFIG|GET_VR_CONFIG)(\\s+)(DEVICE_INFO|VR_OPTION|SHOW_STYLE|WAKEUP_ALIAS|DIALOGUE_STYLE|DIALOGUE_LANGUAGE|SOUND_AREA_OPTION|WAKEUP_KEYWORD_OPTION|VOICE_WAKEUP_OPTION|WAKEUP_ENABLE|GET_WAKEUP_WORD|SET_TTS_VOICE_TYPE|MULTI_DIALOGUE|EXPERIENCE_IMPROVENMENT|PERSONAL_SENSITIVE_AUTHORIZATION|VOICE_SENSITIVE_AUTHORIZATION|ACTIVE_INTERACTION|SRE_SENSITIVE_EMPOWER_OPTION|SRE_FUNC_ENABLE_OPTION|SERVER_CACHE_LANGUAGE|GPT_ENABLE_OPTION|SRE_MEMORY|VEHICLE_MEMORY)\\b",
+          "captures": {
+            "1": { "name": "entity.name.section.client.nano-mgo" },
+            "2": { "name": "support.function.command.nano-mgo" },
+            "4": { "name": "support.constant.vr-config.nano-mgo" }
+          }
+        }
+      ]
+    },
+    "setParamLines": {
+      "patterns": [
+        {
+          "name": "meta.command.set-param.nano-mgo",
+          "match": "(\\[(?:TSA|NIS)\\])(SET_PARAM)(\\s+)(AIBS_PARAM_[A-Z0-9_]+)\\b",
+          "captures": {
+            "1": { "name": "entity.name.section.client.nano-mgo" },
+            "2": { "name": "support.function.command.nano-mgo" },
+            "4": { "name": "support.constant.set-param.nano-mgo" }
+          }
+        },
+        {
+          "name": "meta.command.set-param.nano-mgo",
+          "match": "(\\[HWK\\])(SET_PARAM)(\\s+)(SPEECH_ENGINE_PARAM_[A-Z0-9_]+)\\b",
+          "captures": {
+            "1": { "name": "entity.name.section.client.nano-mgo" },
+            "2": { "name": "support.function.command.nano-mgo" },
+            "4": { "name": "support.constant.set-param.nano-mgo" }
+          }
+        },
+        {
+          "name": "meta.command.set-param.nano-mgo",
+          "match": "(\\[TSS\\])(SET_PARAM)(\\s+)(ENGINE_PARAM_[A-Z0-9_]+)\\b",
+          "captures": {
+            "1": { "name": "entity.name.section.client.nano-mgo" },
+            "2": { "name": "support.function.command.nano-mgo" },
+            "4": { "name": "support.constant.set-param.nano-mgo" }
+          }
+        }
+      ]
+    },
+    "expLines": {
+      "patterns": [
+        {
+          "name": "meta.assertion.nano-mgo",
+          "match": "(\\[EXP\\])([A-Za-z_][A-Za-z0-9_-]*)\\b",
+          "captures": {
+            "1": { "name": "entity.name.section.client.exp.nano-mgo" },
+            "2": { "name": "entity.name.type.assertion.nano-mgo" }
+          }
+        }
+      ]
+    },
+    "clientLines": {
+      "patterns": [
+        {
+          "name": "meta.command.nano-mgo",
+          "match": "(\\[(?:TSA|SET|VOI|OMS|TTS|HWK|PST|TIA|CPL|ENR|PIS|TSS|TSR|SYS|NIS|NSE)\\])([A-Z_][A-Z0-9_]*)\\b",
+          "captures": {
+            "1": { "name": "entity.name.section.client.nano-mgo" },
+            "2": { "name": "support.function.command.nano-mgo" }
+          }
+        }
+      ]
+    },
+    "variables": {
+      "patterns": [
+        {
+          "name": "variable.parameter.template.nano-mgo",
+          "match": "\\$\\{[A-Za-z_][A-Za-z0-9_]*\\}"
+        },
+        {
+          "name": "variable.language.eval.nano-mgo",
+          "match": "\\{EVAL:[^}]*\\}"
+        },
+        {
+          "name": "variable.language.env.nano-mgo",
+          "match": "\\{(?:WORKPATH|ROOTPATH|WORKSPACE|BASEPATH|LIBPATH|CASEPATH|LOGPATH|SOCKETPATH|CONFIGPATH|CARPLAYCONFIG|LCSCONFIG|CASELIST|PARAMETERIZEDATA|SUITEID|SUITENAME|CASEID|UUID|TIMESTAMP|NOW)\\}"
+        },
+        {
+          "name": "variable.language.channel.nano-mgo",
+          "match": "\\[[0-9]+\\]"
+        }
+      ]
+    },
+    "timeout": {
+      "patterns": [
+        {
+          "name": "meta.timeout.nano-mgo",
+          "begin": "<timeout=",
+          "beginCaptures": {
+            "0": { "name": "keyword.operator.timeout.nano-mgo" }
+          },
+          "end": ">",
+          "endCaptures": {
+            "0": { "name": "keyword.operator.timeout.nano-mgo" }
+          },
+          "patterns": [
+            {
+              "name": "constant.numeric.timeout.nano-mgo",
+              "match": "-?\\d+(?:\\.\\d+)?"
+            }
+          ]
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.dsl.nano-mgo",
+          "match": "@in|@notin|@i|>=|<=|==|!=|!~|>|<|=|:|;|~"
+        }
+      ]
+    },
+    "keys": {
+      "patterns": [
+        {
+          "name": "entity.other.attribute-name.argument.nano-mgo",
+          "match": "\\b[A-Za-z_][A-Za-z0-9_]*(?==)"
+        },
+        {
+          "name": "entity.other.attribute-name.field.nano-mgo",
+          "match": "\\b[A-Za-z_][A-Za-z0-9_.\\[\\]-]*(?=:)"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.nano-mgo",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            { "include": "#variables" }
+          ]
+        },
+        {
+          "name": "string.quoted.single.nano-mgo",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            { "include": "#variables" }
+          ]
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.nano-mgo",
+          "match": "\\b-?\\d+(?:\\.\\d+)?(?:ms|s|%)?\\b"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "constant.language.boolean.nano-mgo",
+          "match": "\\b(?:true|false|True|False)\\b"
+        },
+        {
+          "name": "constant.language.null.nano-mgo",
+          "match": "\\b(?:None|null|NULL)\\b"
+        },
+        {
+          "name": "support.constant.mode.nano-mgo",
+          "match": "\\b(?:cmn|eng|yue|JSON|LINE|REPLACE|DELETE|TEXT|CSV|default)\\b"
+        },
+        {
+          "name": "keyword.other.special.nano-mgo",
+          "match": "\\b(?:SEARCH|MATCH|DIFF|KV|JSON|EXTRACT|EXISTS|ABSENT|COUNT)\\b"
+        }
+      ]
+    }
+  }
+}

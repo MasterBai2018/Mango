@@ -1,0 +1,62 @@
+# ============================================================
+# Mango Docker构建忽略文件
+# 这些文件/目录不会被复制到Docker镜像中
+# ============================================================
+
+# Git版本控制
+.git/
+.gitignore
+
+# Python缓存
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+
+# IDE配置
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# 测试和日志
+*.log
+.pytest_cache/
+.coverage
+htmlcov/
+
+# 需要外部挂载的目录（不打入镜像）
+lib/
+workspace/
+TestAudio
+TestCase
+TestResource
+audio_data/
+
+# Docker相关
+docker/
+Dockerfile
+.dockerignore
+
+# 允许基础镜像构建所需目录（在忽略 docker/ 后进行白名单放行）
+!docker/image/
+!docker/image/**
+!docker/build_image.sh
+!docker/build_whole.sh
+
+# 旧的运行脚本（新镜像不需要）
+Run_Docker.py
+GDB.sh
+
+# 临时文件
+*.tmp
+*.temp
+*.bak
+
+# allure报告目录
+allure-results/
+allure-report/

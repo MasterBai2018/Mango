@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>solution编写说明</title>
+  <style>
+    :root {
+      --text: #1f2328;
+      --muted: #4b5563;
+      --line: #d0d7de;
+      --bg: #ffffff;
+      --code-bg: #f3f6ff;
+      --code-line: #9db4ff;
+      --th-bg: #eef2f7;
+      --accent: #1d4ed8;
+      --accent-soft: #dbeafe;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Noto Serif SC", "Songti SC", "SimSun", "STSong", serif;
+      line-height: 1.8;
+      font-size: 17px;
+    }
+    .page {
+      max-width: 1440px;
+      margin: 22px auto 30px;
+      padding: 0 20px 26px;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    .sidebar {
+      position: sticky;
+      top: 16px;
+      max-height: calc(100vh - 32px);
+      overflow: auto;
+      border: 1px solid var(--line);
+      background: #fafbfc;
+      border-radius: 8px;
+      padding: 14px 12px;
+    }
+    .sidebar h2 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      border: none;
+      padding: 0;
+    }
+    .sidebar ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .sidebar li {
+      margin: 0;
+      line-height: 1.45;
+    }
+    .sidebar .toc-lvl2 a {
+      display: block;
+      padding: 6px 8px;
+      color: #1f2937;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .sidebar .toc-lvl3 a {
+      display: block;
+      padding: 4px 8px 4px 18px;
+      color: #374151;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 400;
+    }
+    .sidebar a:hover { background: var(--accent-soft); }
+    .content {
+      min-width: 0;
+      padding: 0 8px;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin: 1.2em 0 0.5em;
+      line-height: 1.4;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+    h1 { font-size: 2.1em; border-bottom: 1px solid var(--line); padding-bottom: 0.3em; }
+    h2 { font-size: 1.6em; border-bottom: 1px solid var(--line); padding-bottom: 0.25em; }
+    h3 { font-size: 1.3em; }
+    p { margin: 0.55em 0; }
+    strong { color: #0f3f9f; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--line); margin: 1.4em 0; }
+    code {
+      background: var(--code-bg);
+      border: 1px solid var(--code-line);
+      color: #0b3b91;
+      padding: 0.12em 0.4em;
+      border-radius: 4px;
+      font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+      font-size: 0.95em;
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--code-line);
+      border-left: 5px solid var(--accent);
+      border-radius: 6px;
+      padding: 12px 14px;
+      overflow-x: auto;
+      margin: 0.8em 0 1em;
+    }
+    pre code {
+      border: none;
+      background: transparent;
+      padding: 0;
+      font-size: 0.9em;
+      line-height: 1.6;
+    }
+    blockquote {
+      margin: 0.9em 0;
+      padding: 0.35em 1em;
+      border-left: 4px solid var(--accent);
+      color: var(--muted);
+      background: #f8fbff;
+    }
+    ul, ol { margin: 0.45em 0 0.65em 1.5em; padding: 0; }
+    li { margin: 0.2em 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.9em 0 1.1em;
+      table-layout: fixed;
+      font-size: 15px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      vertical-align: top;
+      word-break: break-word;
+    }
+    th {
+      background: var(--th-bg);
+      font-weight: 700;
+      text-align: left;
+      color: #0f3f9f;
+    }
+    .header {
+      margin-bottom: 22px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #111827;
+    }
+    .header .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 6px;
+    }
+    @media (max-width: 1100px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        position: relative;
+        top: auto;
+        max-height: none;
+      }
+    }
+    </style>
+</head>
+<body>
+  <main class="page">
+    <div class="layout">
+      <aside class="sidebar">
+        <h2>导航目录</h2>
+        <ul><li class="toc-lvl2"><a href="#1-文件结构">1. 文件结构</a></li><li class="toc-lvl2"><a href="#2-顶层字段说明">2. 顶层字段说明</a></li><li class="toc-lvl3"><a href="#21-global">2.1 `global`</a></li><li class="toc-lvl3"><a href="#22-scenarios">2.2 `scenarios`</a></li><li class="toc-lvl2"><a href="#3-suite-字段说明">3. Suite 字段说明</a></li><li class="toc-lvl2"><a href="#4-继承规则">4. 继承规则</a></li><li class="toc-lvl2"><a href="#5-environment-规则">5. `environment` 规则</a></li><li class="toc-lvl2"><a href="#6-project_config-规则">6. `project_config` 规则</a></li><li class="toc-lvl2"><a href="#7-标签规则">7. 标签规则</a></li><li class="toc-lvl3"><a href="#71-主标签要求">7.1 主标签要求</a></li><li class="toc-lvl3"><a href="#72-标签不能重复">7.2 标签不能重复</a></li><li class="toc-lvl2"><a href="#8-enable--disable-规则">8. `enable` / `disable` 规则</a></li><li class="toc-lvl2"><a href="#9-cli-参数优先级">9. CLI 参数优先级</a></li><li class="toc-lvl2"><a href="#10-参数化字段命名">10. 参数化字段命名</a></li><li class="toc-lvl2"><a href="#11-日志输出规则">11. 日志输出规则</a></li><li class="toc-lvl2"><a href="#12-最小完整示例">12. 最小完整示例</a></li><li class="toc-lvl2"><a href="#13-当前实现边界">13. 当前实现边界</a></li></ul>
+      </aside>
+      <section class="content">
+        <section class="header">
+          <h1>solution编写说明</h1>
+        </section>
+        <h1 id="solution-编写手册">SOLUTION 编写手册</h1>
+<p>本文档说明当前 Mango YAML 版 <code>solution</code> 的编写规则。</p>
+<p>当前实现对应：</p>
+<ul>
+<li><code>src/userInterface/parse_solution.py</code></li>
+</ul>
+<ul>
+<li><code>src/userInterface/run_test.py</code></li>
+</ul>
+<p>目标：</p>
+<ul>
+<li>使用 YAML 编写 solution</li>
+</ul>
+<ul>
+<li>支持 <code>global -&gt; scenario -&gt; suite</code> 的部分字段继承</li>
+</ul>
+<ul>
+<li>兼容当前 <code>run_test.py</code> 主执行链路</li>
+</ul>
+<h2 id="1-文件结构">1. 文件结构</h2>
+<p><code>solution</code> 顶层固定包含两个字段：</p>
+<pre><code>
+global:
+  ...
+
+scenarios:
+  - name: 场景1
+    ...
+</code></pre>
+<h2 id="2-顶层字段说明">2. 顶层字段说明</h2>
+<h3 id="21-global">2.1 <code>global</code></h3>
+<p><code>global</code> 用于放全局默认配置。</p>
+<p>当前支持字段：</p>
+<ul>
+<li><code>environment</code>：全局运行环境，决定当前 solution 运行在哪个工程下，例如 <code>24mm/ota2</code>。该字段必填，且只能写在 <code>global</code>。</li>
+</ul>
+<ul>
+<li><code>global_max_workers</code>：solution 级调度总并发上限，限制同一时刻最多允许多少个 suite 被调度执行。</li>
+</ul>
+<ul>
+<li><code>online_max_workers</code>：主标签为 <code>ONLINE</code> 的 suite 最大并发数。</li>
+</ul>
+<ul>
+<li><code>cp_max_workers</code>：主标签为 <code>CP</code> 的 suite 最大并发数。</li>
+</ul>
+<ul>
+<li><code>offline_max_workers</code>：主标签为 <code>OFFLINE</code> 的 suite 最大并发数，支持整数或 <code>auto</code>。当为 <code>auto</code> 时，离线并发会根据剩余全局并发动态计算。</li>
+</ul>
+<ul>
+<li><code>enable</code>：场景启用列表，用于控制本次 solution 中哪些 scenario 会参与执行。常见写法是 <code>[ALL]</code>。</li>
+</ul>
+<ul>
+<li><code>disable</code>：场景禁用列表，用于显式跳过某些 scenario；如果包含 <code>ALL</code>，则整份 solution 不执行。</li>
+</ul>
+<ul>
+<li><code>project_config</code>：全局默认 LCS 配置路径，供 scenario 和 suite 继承使用；若下层未配置，则使用这里的值。</li>
+</ul>
+<ul>
+<li><code>retry</code>：全局默认失败重试次数，对应 pytest 的 <code>--reruns</code>；可被 scenario 或 suite 覆盖。</li>
+</ul>
+<ul>
+<li><code>xdist_workers</code>：全局默认 xdist 并发数，对应 pytest 的 <code>-n</code>；可被 scenario 或 suite 覆盖。</li>
+</ul>
+<p>示例：</p>
+<pre><code>
+global:
+  environment: 24mm/ota2
+  global_max_workers: 25
+  online_max_workers: 5
+  cp_max_workers: 1
+  offline_max_workers: auto
+  enable: [ALL]
+  project_config: null
+  retry: 0
+  xdist_workers: 0
+</code></pre>
+<h3 id="22-scenarios">2.2 <code>scenarios</code></h3>
+<p><code>scenarios</code> 是场景列表，每一项表示一个场景。</p>
+<p>每个场景下固定使用：</p>
+<ul>
+<li><code>name</code>：场景名称，也是报告展示和目录命名使用的名称，建议语义清晰且保持唯一。</li>
+</ul>
+<ul>
+<li><code>suites</code>：当前场景下要执行的 suite 列表，是场景的核心内容。</li>
+</ul>
+<p>可选字段：</p>
+<ul>
+<li><code>owner</code>：场景负责人列表，主要用于说明该场景的维护人或归属人。</li>
+</ul>
+<ul>
+<li><code>project_config</code>：当前 scenario 级默认 LCS 配置路径，会覆盖 <code>global.project_config</code>，并可继续被 suite 级覆盖。</li>
+</ul>
+<ul>
+<li><code>retry</code>：当前 scenario 级默认失败重试次数，会覆盖 <code>global.retry</code>，并可继续被 suite 级覆盖。</li>
+</ul>
+<ul>
+<li><code>xdist_workers</code>：当前 scenario 级默认 xdist 并发数，会覆盖 <code>global.xdist_workers</code>，并可继续被 suite 级覆盖。</li>
+</ul>
+<p>示例：</p>
+<pre><code>
+scenarios:
+  - name: AIBS_智能语音
+    project_config: TestCase/conf/Mongo/config/24mm_ota_2/lcs_OTA2_test.conf
+    owner: [zhanglukai]
+    suites:
+      - { config: xxx, case: yyy, tag: [OFFLINE], abstract: 示例 }
+</code></pre>
+<h2 id="3-suite-字段说明">3. Suite 字段说明</h2>
+<p>每个 <code>suite</code> 当前支持以下字段：</p>
+<ul>
+<li><code>config</code>：suite 对应的 decoder 配置文件路径。</li>
+</ul>
+<ul>
+<li><code>case</code>：suite 对应的测试用例文件路径，通常是 <code>.mgo</code> 文件。</li>
+</ul>
+<ul>
+<li><code>tag</code>：suite 标签列表，必须包含且只能包含一个主标签：<code>ONLINE</code>、<code>OFFLINE</code> 或 <code>CP</code>。</li>
+</ul>
+<ul>
+<li><code>abstract</code>：suite 简介，用于报告展示和问题定位。</li>
+</ul>
+<ul>
+<li><code>parameter</code>：suite 级参数化 CSV 文件路径，会在运行时映射为内部的 <code>parameterized_data</code>。</li>
+</ul>
+<ul>
+<li><code>steps</code>：suite 级动态步骤参数文件路径，会在运行时映射为内部的 <code>steps_data</code>。</li>
+</ul>
+<ul>
+<li><code>project_config</code>：suite 级 LCS 配置路径，会覆盖 scenario/global 继承值。</li>
+</ul>
+<ul>
+<li><code>retry</code>：suite 级失败重试次数，会覆盖 scenario/global 继承值。</li>
+</ul>
+<ul>
+<li><code>xdist_workers</code>：suite 级 xdist 并发数，会覆盖 scenario/global 继承值。</li>
+</ul>
+<ul>
+<li><code>name</code>：suite 类型名称，当前可选；不写时默认使用 <code>NANO</code>。</li>
+</ul>
+<p>其中：</p>
+<ul>
+<li><code>config</code>：decoder 配置文件路径</li>
+</ul>
+<ul>
+<li><code>case</code>：测试用例文件路径</li>
+</ul>
+<ul>
+<li><code>tag</code>：suite 标签，必须包含一个主标签</li>
+</ul>
+<ul>
+<li><code>abstract</code>：suite 简介</li>
+</ul>
+<ul>
+<li><code>parameter</code>：参数化 CSV 文件路径</li>
+</ul>
+<ul>
+<li><code>steps</code>：动态步骤参数文件路径</li>
+</ul>
+<ul>
+<li><code>project_config</code>：LCS 配置路径，可覆盖上层</li>
+</ul>
+<ul>
+<li><code>retry</code>：pytest reruns 次数，可覆盖上层</li>
+</ul>
+<ul>
+<li><code>xdist_workers</code>：pytest <code>-n</code> 并发数，可覆盖上层</li>
+</ul>
+<ul>
+<li><code>name</code>：可选，默认是 <code>NANO</code></li>
+</ul>
+<p>示例：</p>
+<pre><code>
+suites:
+  - { config: TestCase/conf/Mongo/config/24mm_ota_2/Lexus_D/decoder.conf, case: TestCase/nano/24MM/SDK/AIBS/freetalk_timeout.mgo, tag: [OFFLINE], abstract: FreetalkTimeout超时逻辑 }
+  - { retry: 3, xdist_workers: 2, config: TestCase/conf/Mongo/config/24mm_ota_2/T1/decoder.conf, case: TestCase/nano/24MM/SDK/AIBS_BUG_CASE/wakeup_bug_yf.mgo, tag: [OFFLINE], abstract: BugCaseList_YF }
+  - { parameter: TestCase/nano/24MM/SDK/DIGIT/digital_online.csv, config: TestCase/conf/Mongo/config/24mm_ota_2/Lexus_D/decoder.conf, case: TestCase/nano/24MM/SDK/DIGIT/digital.mgo, tag: [ONLINE], abstract: 中文数字转换在线 }
+</code></pre>
+<h2 id="4-继承规则">4. 继承规则</h2>
+<p>当前只有以下 3 个字段支持三级继承：</p>
+<ul>
+<li><code>project_config</code></li>
+</ul>
+<ul>
+<li><code>retry</code></li>
+</ul>
+<ul>
+<li><code>xdist_workers</code></li>
+</ul>
+<p>优先级：</p>
+<p><code>suite &gt; scenario &gt; global &gt; 默认值</code></p>
+<p>默认值如下：</p>
+<ul>
+<li><code>project_config</code>: <code>null</code></li>
+</ul>
+<ul>
+<li><code>retry</code>: <code>0</code></li>
+</ul>
+<ul>
+<li><code>xdist_workers</code>: <code>0</code></li>
+</ul>
+<p>说明：</p>
+<ul>
+<li><code>environment</code> 不支持继承，只能写在 <code>global</code></li>
+</ul>
+<ul>
+<li><code>config</code> / <code>case</code> / <code>tag</code> / <code>abstract</code> / <code>parameter</code> / <code>steps</code> 都是 suite 级字段，不参与继承</li>
+</ul>
+<h2 id="5-environment-规则">5. <code>environment</code> 规则</h2>
+<p><code>environment</code> 只能写在 <code>global</code>，并且必填。</p>
+<p>示例：</p>
+<pre><code>
+global:
+  environment: 24mm/ota2
+</code></pre>
+<p>要求：</p>
+<ul>
+<li>必须存在</li>
+</ul>
+<ul>
+<li>必须是 Mango 支持的工程名</li>
+</ul>
+<p>例如：</p>
+<ul>
+<li><code>24mm/ota2</code></li>
+</ul>
+<ul>
+<li><code>24mm/ota3</code></li>
+</ul>
+<ul>
+<li><code>24mm/mp</code></li>
+</ul>
+<h2 id="6-project_config-规则">6. <code>project_config</code> 规则</h2>
+<p><code>project_config</code> 允许为空。</p>
+<p>但如果最终 <code>environment</code> 属于依赖 LCS 的工程，则运行时最终生效的 <code>project_config</code> 不能为空，否则会报错。</p>
+<p>当前依赖 LCS 的典型工程包括：</p>
+<ul>
+<li><code>24mm/mp</code></li>
+</ul>
+<ul>
+<li><code>24mm/ota1</code></li>
+</ul>
+<ul>
+<li><code>24mm/ota2</code></li>
+</ul>
+<ul>
+<li><code>24mm/ota3</code></li>
+</ul>
+<ul>
+<li><code>bev</code></li>
+</ul>
+<ul>
+<li><code>nissan</code></li>
+</ul>
+<ul>
+<li><code>800d</code></li>
+</ul>
+<h2 id="7-标签规则">7. 标签规则</h2>
+<h3 id="71-主标签要求">7.1 主标签要求</h3>
+<p>每个 suite 的 <code>tag</code> 必须且只能包含一个主标签：</p>
+<ul>
+<li><code>ONLINE</code></li>
+</ul>
+<ul>
+<li><code>OFFLINE</code></li>
+</ul>
+<ul>
+<li><code>CP</code></li>
+</ul>
+<p>合法示例：</p>
+<pre><code>
+tag: [OFFLINE]
+tag: [ONLINE]
+tag: [AIBS_ASR_NLU, OFFLINE]
+</code></pre>
+<p>非法示例：</p>
+<pre><code>
+tag: []
+tag: [ONLINE, OFFLINE]
+tag: [WAKEUP]
+</code></pre>
+<h3 id="72-标签不能重复">7.2 标签不能重复</h3>
+<p>例如以下写法非法：</p>
+<pre><code>
+tag: [ONLINE, ONLINE]
+</code></pre>
+<h2 id="8-enable--disable-规则">8. <code>enable</code> / <code>disable</code> 规则</h2>
+<p><code>global.enable</code> 和 <code>global.disable</code> 用于按场景名控制执行。</p>
+<p>示例：</p>
+<pre><code>
+global:
+  enable: [ALL]
+</code></pre>
+<p>或：</p>
+<pre><code>
+global:
+  enable: [AIBS_智能语音, Digit_数字转换]
+  disable: [AIBS_BUG_CASE]
+</code></pre>
+<p>规则：</p>
+<ul>
+<li><code>enable</code> 不配置时，默认等价于 <code>[ALL]</code></li>
+</ul>
+<ul>
+<li><code>disable</code> 可不写</li>
+</ul>
+<ul>
+<li><code>disable</code> 中如果包含 <code>ALL</code>，则整个 solution 不再执行</li>
+</ul>
+<p>另外，命令行显式传入的 <code>--mongo_enable</code> 会覆盖 YAML 中的 <code>global.enable</code></p>
+<h2 id="9-cli-参数优先级">9. CLI 参数优先级</h2>
+<p>当前代码中，以下字段支持被命令行覆盖：</p>
+<ul>
+<li><code>project_config</code></li>
+</ul>
+<ul>
+<li><code>retry</code></li>
+</ul>
+<ul>
+<li><code>xdist_workers</code></li>
+</ul>
+<p>优先级如下：</p>
+<ul>
+<li><code>project_config</code>: <code>CLI(-p) &gt; suite &gt; scenario &gt; global &gt; null</code></li>
+</ul>
+<ul>
+<li><code>retry</code>: <code>CLI(-R) &gt; suite &gt; scenario &gt; global &gt; 0</code></li>
+</ul>
+<ul>
+<li><code>xdist_workers</code>: <code>CLI(-n) &gt; suite &gt; scenario &gt; global &gt; 0</code></li>
+</ul>
+<p>说明：</p>
+<ul>
+<li>如果 CLI 没有显式传值，则使用 YAML 继承结果</li>
+</ul>
+<ul>
+<li><code>environment</code> 不走 CLI 覆盖，按当前 YAML <code>global.environment</code> 为准</li>
+</ul>
+<h2 id="10-参数化字段命名">10. 参数化字段命名</h2>
+<p>YAML 版 solution 使用以下命名：</p>
+<ul>
+<li><code>parameter</code></li>
+</ul>
+<ul>
+<li><code>steps</code></li>
+</ul>
+<p>因此在 YAML 中请统一写新名字，不要再写旧名字。</p>
+<p>推荐：</p>
+<pre><code>
+- { parameter: TestCase/data/demo.csv, steps: TestCase/data/demo_steps.csv, config: xxx, case: yyy, tag: [OFFLINE], abstract: 示例 }
+</code></pre>
+<h2 id="11-日志输出规则">11. 日志输出规则</h2>
+<p>当前 <code>stdout</code> 不再从 YAML 配置。</p>
+<p>日志路径由代码统一生成，格式如下：</p>
+<pre><code>
+&lt;workspace&gt;/&lt;solution_name&gt;/&lt;scene_name&gt;/terminal_output/log_suiteID_&lt;suite_id&gt;.txt
+</code></pre>
+<p>示例：</p>
+<pre><code>
+workspace/solution_24mm_sdk_ota2/个性化/terminal_output/log_suiteID_1.txt
+</code></pre>
+<p>运行时采用 <code>tee</code>，因此：</p>
+<ul>
+<li>终端会实时打印 pytest 输出</li>
+</ul>
+<ul>
+<li>日志文件也会同时保存一份完整输出</li>
+</ul>
+<h2 id="12-最小完整示例">12. 最小完整示例</h2>
+<pre><code>
+global:
+  environment: 24mm/ota2
+  global_max_workers: 25
+  online_max_workers: 5
+  cp_max_workers: 1
+  offline_max_workers: auto
+  enable: [ALL]
+  project_config: null
+  retry: 0
+  xdist_workers: 0
+
+scenarios:
+  - name: AIBS_智能语音
+    project_config: TestCase/conf/Mongo/config/24mm_ota_2/lcs_OTA2_test.conf
+    owner: [zhanglukai]
+    suites:
+      - { config: TestCase/conf/Mongo/config/24mm_ota_2/Lexus_D/decoder.conf, case: TestCase/nano/24MM/SDK/AIBS/freetalk_timeout.mgo, tag: [OFFLINE], abstract: FreetalkTimeout超时逻辑 }
+
+  - name: Digit_数字转换
+    project_config: TestCase/conf/Mongo/config/24mm_ota_2/lcs_OTA2_test.conf
+    retry: 1
+    suites:
+      - { parameter: TestCase/nano/24MM/SDK/DIGIT/digital_offline.csv, config: TestCase/conf/Mongo/config/24mm_ota_2/Lexus_D/decoder.conf, case: TestCase/nano/24MM/SDK/DIGIT/digital.mgo, tag: [OFFLINE], abstract: 中文数字转换离线 }
+      - { xdist_workers: 2, parameter: TestCase/nano/24MM/SDK/DIGIT/digital_online.csv, config: TestCase/conf/Mongo/config/24mm_ota_2/Lexus_D/decoder.conf, case: TestCase/nano/24MM/SDK/DIGIT/digital.mgo, tag: [ONLINE], abstract: 中文数字转换在线 }
+</code></pre>
+<h2 id="13-当前实现边界">13. 当前实现边界</h2>
+<p>当前 YAML 解析器只保证兼容：</p>
+<ul>
+<li><code>run_test.py</code> 主执行链路</li>
+</ul>
+<p>不保证完整兼容：</p>
+<ul>
+<li>旧 TXT solution</li>
+</ul>
+<ul>
+<li><code>parse_config.py</code> 的全部历史能力</li>
+</ul>
+<ul>
+<li>旧的恢复/救援等边缘链路</li>
+</ul>
+<p>如果后续扩展了 <code>run_test.py</code> 或 <code>parse_solution.py</code>，请同步更新本文档。</p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

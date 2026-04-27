@@ -1,0 +1,7 @@
+id: mango-plugin
+name: Mango 测试统计插件
+description: 提供 Suite/Define 层级统计标签页
+jsFiles:
+  - index.js
+cssFiles:
+  - styles.css

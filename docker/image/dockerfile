@@ -1,0 +1,51 @@
+# 使用官方的 Ubuntu 镜像作为基础镜像
+FROM docker.1ms.run/ubuntu:24.04
+LABEL maintainer="baihuidong@pachiratech.com"
+
+# 更新包列表并安装必要工具，包括JDK
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    gdb \
+    curl \
+    gdb-multiarch \
+    wget \
+    vim \
+    unzip \
+    rsync \
+    tcpdump \
+    sox \
+    ffmpeg \
+    file \
+    openjdk-11-jre-headless \
+    && rm -rf /var/lib/apt/lists/*
+
+# 将 requirements.txt 与 Allure 复制到容器中
+COPY ./docker/image/requirements.txt .
+COPY ./plugins/allure-2.32.2 /opt/allure-2.32.2
+
+# 安装基础依赖
+RUN pip3 install --break-system-packages -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple && \
+    apt-get clean && \
+    rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* && \
+    rm -rf requirements.txt
+
+# 复制 listener.py 和 utils.py 到动态 site-packages 路径
+COPY ./docker/image/listener.py /tmp/listener.py
+COPY ./docker/image/utils.py /tmp/utils.py
+COPY ./docker/image/types.py /tmp/types.py
+RUN SITE_PKG=$(python3 -c "import site; print(site.getsitepackages()[0])") && \
+    mkdir -p $SITE_PKG/allure_pytest && \
+    mv /tmp/listener.py $SITE_PKG/allure_pytest/ && \
+    mv /tmp/utils.py $SITE_PKG/allure_pytest/ && \
+    mv /tmp/types.py $SITE_PKG/allure_commons/
+
+# 设置环境变量
+ENV PATH="/opt/allure-2.32.2/bin:$PATH"
+
+# 复制项目代码到容器
+# COPY . /mango
+WORKDIR /mango
+
+# 容器启动时进入bash shell
+CMD ["/bin/bash"]
